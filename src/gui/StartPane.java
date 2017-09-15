@@ -4,13 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class StartScreen extends StackPane{
+public class StartPane extends StackPane{
 	//This is the first Screen that the user will see, the stage is created in Main and then passed between all the scenes.
 
-	public StartScreen(Stage stage){
+	public StartPane(Stage stage){
 		super();
 		Button btn = new Button();
 		btn.setText("Start");
@@ -25,8 +26,15 @@ public class StartScreen extends StackPane{
 			
 			}
 		});
-
 		
-		this.getChildren().add(btn); 
+		Label label=new Label();
+		label.setText("Maori Maths Mentor");
+		
+		
+		label.setScaleX(5);
+		label.setScaleY(5);
+
+		this.getChildren().add(btn);
+		this.getChildren().add(label); 
 	}
 }
