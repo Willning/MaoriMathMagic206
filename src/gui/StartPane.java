@@ -21,7 +21,7 @@ public class StartPane extends StackPane{
 
 			@Override
 			public void handle(ActionEvent event) {
-			stage.setScene(new Scene(new ListSelectPane(stage), 800 ,600));
+			stage.setScene(new Scene(new ListSelectPane(stage), FrameConstants.WINDOW_WIDTH ,FrameConstants.WINDOW_HEIGHT));
 			stage.sizeToScene();
 			
 			}

@@ -22,6 +22,13 @@ public class ListSelectPane extends StackPane {
 		easy.setPrefSize(100d, 75d);
 		easy.setTranslateY(100d);
 		
+		easy.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event){
+				_stage.setScene(new Scene(new TestPane(_stage),800,600));
+			}
+		});
+		
 		
 		
 		Button hard = new Button();
@@ -46,7 +53,7 @@ public class ListSelectPane extends StackPane {
 			@Override
 			public void handle(ActionEvent event) {
 				//back button will bring us back to the start menu 
-			_stage.setScene(new Scene(new StartPane(_stage), 800 ,600));
+			_stage.setScene(new Scene(new StartPane(_stage), FrameConstants.WINDOW_WIDTH ,FrameConstants.WINDOW_HEIGHT));
 			_stage.sizeToScene();
 			
 			}
