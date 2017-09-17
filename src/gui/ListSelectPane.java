@@ -25,7 +25,7 @@ public class ListSelectPane extends StackPane {
 		easy.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event){
-				_stage.setScene(new Scene(new TestPane(_stage),800,600));
+				_stage.setScene(new Scene(new TestPane(_stage, ListMode.EASY),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
 			}
 		});
 		
@@ -36,6 +36,13 @@ public class ListSelectPane extends StackPane {
 		hard.setText("Hard List");
 		hard.setPrefSize(100d, 75d);
 		hard.setTranslateY(180d);
+		
+		hard.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event){
+				_stage.setScene(new Scene(new TestPane(_stage, ListMode.HARD),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+			}
+		});
 		
 		Label label=new Label();
 		label.setText("Select Difficulty List");
