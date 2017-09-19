@@ -25,7 +25,7 @@ public class ListSelectPane extends StackPane {
 		easy.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event){
-				_stage.setScene(new Scene(new TestPane(_stage, ListMode.EASY),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+				_stage.setScene(new Scene(new TestHolder(_stage, ListMode.EASY),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
 			}
 		});
 		
@@ -40,7 +40,7 @@ public class ListSelectPane extends StackPane {
 		hard.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event){
-				_stage.setScene(new Scene(new TestPane(_stage, ListMode.HARD),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+				_stage.setScene(new Scene(new TestHolder(_stage, ListMode.HARD),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
 			}
 		});
 		
