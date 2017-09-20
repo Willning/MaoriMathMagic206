@@ -70,7 +70,7 @@ public class TestHolder extends StackPane implements Observer{
 		
 		
 		if (numCorrect+numWrong>=10){
-			_stage.setScene(new Scene(new ScoreScreen(),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+			_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
 		}
 
 	}

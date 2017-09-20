@@ -28,7 +28,7 @@ public class StartPane extends StackPane{
 		});
 		
 		Label label=new Label();
-		label.setText("Maori Maths Mentor");
+		label.setText("Maori Maths Magic");
 		
 		
 		label.setScaleX(5);

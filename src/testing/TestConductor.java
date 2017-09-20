@@ -9,20 +9,28 @@ import java.util.Observable;
  */
 public class TestConductor extends Observable{
 
+	private IntegerMaoriConverter _convert;
+	
 	public TestConductor(){
-
+		_convert=new IntegerMaoriConverter();
 	}
 
-	public void test(){
+	public void test(int input){
 		//STUB, right now will 50/50 correct and incorrect
 		this.setChanged();
-
-		if (Math.random()<=0.5){		
+		System.out.println(_convert.convertNumber(input));
+		
+		if (Math.random()<=0.5){
+			
 			this.notifyObservers("Correct");
 		}else{
 			this.notifyObservers("Incorrect");
 		}
 
-
+	}
+	
+	public void skip(){
+		this.setChanged();
+		this.notifyObservers("Incorrect");
 	}
 }
