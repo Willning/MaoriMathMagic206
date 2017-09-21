@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 	//TODO, rejig the constants to a constants class 
+	//TODO, make a media player to play the recording
 	
 	
     public static void main(String[] args) {

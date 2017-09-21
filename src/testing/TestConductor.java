@@ -18,7 +18,9 @@ public class TestConductor extends Observable{
 	public void test(int input){
 		//STUB, right now will 50/50 correct and incorrect
 		this.setChanged();
+		
 		System.out.println(_convert.convertNumber(input));
+		//This will be used in a checker at some point
 		
 		if (Math.random()<=0.5){
 			

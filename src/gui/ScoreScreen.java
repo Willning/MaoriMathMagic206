@@ -1,5 +1,8 @@
 package gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -30,7 +33,17 @@ public class ScoreScreen extends StackPane{
 		
 		Button back=new Button();
 		back.setText("back");
-		back.setTranslateY(200d);
+		back.setPrefSize(160d, 35d);
+		back.setTranslateY(100d);
+		back.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				//back button will bring us back to the start menu 
+				_stage.setScene(new Scene(new StartPane(_stage), FrameConstants.WINDOW_WIDTH ,FrameConstants.WINDOW_HEIGHT));
+				_stage.sizeToScene();
+
+			}
+		});
 		
 		this.getChildren().add(_score);
 		this.getChildren().add(back);

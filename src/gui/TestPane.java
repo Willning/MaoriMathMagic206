@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import testing.TestConductor;
+import testing.WordCheck;
 
 public class TestPane extends StackPane{
 	//this pane is to be generated every time 
@@ -59,7 +60,8 @@ public class TestPane extends StackPane{
 		record.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
-				//Call to testConductor to record a soundfile.
+				WordCheck check=new WordCheck();
+				
 			}
 		});
 		
@@ -96,7 +98,7 @@ public class TestPane extends StackPane{
 		play.setPrefSize(75d, 30d);
 
 		Button back = new Button();		
-		back.setText("Back");
+		back.setText("Exit");
 		back.setPrefSize(BUTTON_WIDTH, 30d);
 
 
