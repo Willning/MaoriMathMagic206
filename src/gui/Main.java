@@ -1,8 +1,11 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application{
 	//TODO, rejig the constants to a constants class 
@@ -22,6 +25,14 @@ public class Main extends Application{
 		//every-time the scene shifts, fit the stage to the pane, stops unneccesary size changes
 		
 		primaryStage.setResizable(false);
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
+		
 		//primary stage will not be able to be resized due to it messing up the layout
 		primaryStage.show();
 	}

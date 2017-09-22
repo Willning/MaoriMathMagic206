@@ -25,6 +25,7 @@ public class WordCheck {
 				String inputLine;
 				while ((inputLine = in.readLine()) != null) {
 					System.out.println(inputLine);
+					//fish out the word sil then output the words until the next sil.
 
 				}
 				process.waitFor();
@@ -36,9 +37,9 @@ public class WordCheck {
 
 		}
 
-	};
-	
-	public WordCheck(){
+	};	
+
+	public void test() {
 		Thread thread=new Thread(wordCheck);
 		thread.start();
 	}

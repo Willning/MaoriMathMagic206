@@ -16,7 +16,7 @@ public class IntegerMaoriConverter {
 		output="toru";
 		break;
 		case 4: digit=4;
-		output="wha";
+		output="whaa";
 		break;
 		case 5: digit=5;
 		output="rima";

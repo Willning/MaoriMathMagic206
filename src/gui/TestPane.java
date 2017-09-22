@@ -60,7 +60,7 @@ public class TestPane extends StackPane{
 		record.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
-				WordCheck check=new WordCheck();
+				tester.record();
 				
 			}
 		});

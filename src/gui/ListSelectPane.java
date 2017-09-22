@@ -20,7 +20,7 @@ public class ListSelectPane extends StackPane {
 		//Button for Easy List(1-100)
 		easy.setText("Easy List");
 		easy.setPrefSize(100d, 75d);
-		easy.setTranslateY(100d);
+		easy.setTranslateY(80d);
 		
 		easy.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -35,7 +35,7 @@ public class ListSelectPane extends StackPane {
 		//Button for hard List (1-100)
 		hard.setText("Hard List");
 		hard.setPrefSize(100d, 75d);
-		hard.setTranslateY(180d);
+		hard.setTranslateY(160d);
 		
 		hard.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -46,6 +46,7 @@ public class ListSelectPane extends StackPane {
 		
 		Label label=new Label();
 		label.setText("Select Difficulty List");
+		label.setTranslateY(-20d);
 		
 		
 		label.setScaleX(3);
