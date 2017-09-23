@@ -17,9 +17,9 @@ import testing.WordCheck;
 
 public class TestPane extends StackPane{
 	//this pane is to be generated every time 
-	//nest this in a parent pane that keeps the score?
-	//TODO fix alignment of buttons in HBox and VBox
-	//TODO add media here
+	//nest this in a parent pane that keeps the score?	
+	//TODO add media here to play recording
+	//TODO add a correct/incorrect indicator
 	 
 	
 	private Stage _stage;

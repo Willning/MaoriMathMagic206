@@ -10,13 +10,15 @@ import javafx.stage.Stage;
 
 public class ScoreScreen extends StackPane{
 	//Score screen to hold onto the end score and the difficulty, add a button to take back to the start screen
-	
+	//TODO, add a progress to next stage button
 
 	private Label _score;
+	private Label _status; //based on the score and  the mode, this will say different things.
 	
 	
 	public ScoreScreen(Stage _stage, ListMode mode, int score){
 		_score=new Label();
+		_status=new Label();
 		
 		String difficulty="none";
 		
@@ -31,10 +33,12 @@ public class ScoreScreen extends StackPane{
 		_score.setScaleX(3);
 		_score.setScaleY(3);
 		
+
+		
 		Button back=new Button();
-		back.setText("back");
+		back.setText("Back To Start");
 		back.setPrefSize(160d, 35d);
-		back.setTranslateY(100d);
+		back.setTranslateY(150d);
 		back.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -44,6 +48,29 @@ public class ScoreScreen extends StackPane{
 
 			}
 		});
+		
+		if (score>8&&mode==ListMode.EASY){
+			_status.setText("Congradulations, you are now able to move onto the Hard List ");
+			_status.setTranslateY(40d);
+			_status.setScaleX(2);
+			_status.setScaleY(2);
+			this.getChildren().add(_status);
+			//add a button to play Hard List here.
+			Button  advance=new Button();
+			advance.setText("Play Hard List");
+			advance.setPrefSize(160d, 35d);
+			advance.setTranslateY(100d);
+			
+			advance.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event){
+					_stage.setScene(new Scene(new TestHolder(_stage, ListMode.HARD),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+				}
+			});
+			
+			
+			this.getChildren().add(advance);
+		}
 		
 		this.getChildren().add(_score);
 		this.getChildren().add(back);
