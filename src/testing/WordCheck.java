@@ -1,47 +1,54 @@
 package testing;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javafx.concurrent.Task;
 
 public class WordCheck {
 	//background Task used to check what word a recording is.
+	
+	private String _heardWord=null;
+	
+	
 
-	Task wordCheck=new Task<String>(){
+	public boolean concurrentTest(String expected) throws InterruptedException{
+		Task<String> wordCheck=new Task<String>(){
+			@Override
+			protected String call() throws Exception {
+				//Start HTK and get the word returned.
+				String[] command={"/bin/bash", "./check.sh"};
 
-		@Override
-		protected String call() throws Exception {
-			//Start HTK and get the word returned.
-			String[] command={"/bin/bash", "./HTK/MaoriNumbers/check.sh"};
+				ProcessBuilder builder=new ProcessBuilder(command);
+				builder.redirectErrorStream(true);			
+				Process process=builder.start();					
 
-			ProcessBuilder builder=new ProcessBuilder(command);
-			builder.redirectErrorStream(true);
-			Process process=builder.start();
-			try {
-
-				BufferedReader in =new BufferedReader(new InputStreamReader(process.getInputStream()));
-				//use a BufferedReader to read the result of the text, then return it.
-				String inputLine;
-				while ((inputLine = in.readLine()) != null) {
-					System.out.println(inputLine);
-					//fish out the word sil then output the words until the next sil.
-
-				}
 				process.waitFor();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				System.out.println("interrupted");
-			} //this process is done when it fully executes,
-			return null;
+				//read the mlf file, once the recording finishes
 
-		}
+				String content = new String(Files.readAllBytes(Paths.get("./recout.mlf")));
+				content=content.replace("\n", "");				
 
-	};	
+				if (content.contains("sil")){
+					//if the string has sil, return the word between it.
+					String[] output=content.split("sil");
+					_heardWord=output[1];
+				}
+				return null;
+			}
 
-	public void test() {
+		};
+
 		Thread thread=new Thread(wordCheck);
 		thread.start();
-	}
+		
+		thread.join();
+		if (_heardWord!=null) {
+			return (_heardWord.equals(expected));
+		}
+		else {
+			return false;
+		}
+		
+	}	
 
 }

@@ -12,8 +12,9 @@ import javafx.concurrent.Task;
  */
 public class TestConductor extends Observable{
 
-	private IntegerMaoriConverter _convert;	
-	
+	private IntegerMaoriConverter _convert;
+	WordCheck _check=new WordCheck();
+
 	private boolean _recording=false; //this is a state variable, true when recording
 
 
@@ -23,50 +24,51 @@ public class TestConductor extends Observable{
 
 	}
 
-	public void test(int input){
-		//STUB, right now will 50/50 correct and incorrect
-		this.setChanged();
-	
+	public void test(int input) throws InterruptedException, IOException{
+		//cannot processif _recording is true;
 
-		WordCheck check=new WordCheck();
-		check.test();
-		//check.test() should return what was heard as a string.
-		
-		String expected=_convert.convertNumber(input);
-		System.out.println(expected);
-		
-		if (Math.random()<=0.5){
+		if (!_recording) {
+			String expected=_convert.convertNumber(input);		
+			boolean correct=_check.concurrentTest(expected);				
+			//should return what was heard as a string.
 
-			this.notifyObservers("Correct");
-		}else{
-			this.notifyObservers("Incorrect");
+			this.setChanged();	
+			if (correct){
+				this.notifyObservers("Correct");
+			}else{
+				this.notifyObservers("Incorrect");
+			}
 		}
 
 	}
 
 	public void skip(){
+		//Used for skipping a question, defaults to incorrect
 		this.setChanged();
 		this.notifyObservers("Incorrect");
 	}
 
 	public void record() {
 		//One recording at a time, need to add a way to send out event when recording is done
-		
+
 		Task<String> task=new Task<String>(){
 			//This method is responsible for creating a thread that does the recording, send a event when recording ends.
 			protected String call() throws IOException, InterruptedException{
 				_recording=true;
-				String[] command={"/bin/bash", "./HTK/MaoriNumbers/record.sh"};
+				String[] command={"/bin/bash", "./record.sh"};
 				ProcessBuilder builder=new ProcessBuilder(command);
 				builder.redirectErrorStream(true);
 				Process process=builder.start();				
 				process.waitFor();
-				_recording=false;				
-							
+				_recording=false;
+
+				System.out.println("done");
+
 				return null;
 
 			}
-		};		
+		};
+
 		if (!_recording) {
 			Thread thread=new Thread(task);			
 			thread.start();			

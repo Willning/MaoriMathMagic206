@@ -64,6 +64,7 @@ public class TestHolder extends StackPane implements Observer{
 		}
 		
 		_testPane.reset();
+		
 		String output=String.format("Current Score %d/%d", numCorrect,numCorrect+numWrong);
 		//Make aesthetic, maybe have a questions answered and questions correct label
 		_questionNumber.setText(output);

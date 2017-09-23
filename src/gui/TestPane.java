@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.util.Random;
 
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ public class TestPane extends StackPane{
 	//this pane is to be generated every time 
 	//nest this in a parent pane that keeps the score?
 	//TODO fix alignment of buttons in HBox and VBox
+	//TODO add media here
 	 
 	
 	private Stage _stage;
@@ -76,7 +78,15 @@ public class TestPane extends StackPane{
 				//either create a new testPane keeping the score and difficulty enum or reset the number
 				
 				//call to a tester class which will fire back a correct/incorrect event.
-				tester.test(_number);
+				try {
+					tester.test(_number);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 
 			}
