@@ -43,6 +43,7 @@ public class WordCheck {
 		
 		thread.join();
 		if (_heardWord!=null) {
+			System.out.println(_heardWord);
 			return (_heardWord.equals(expected));
 		}
 		else {
