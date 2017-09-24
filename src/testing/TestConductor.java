@@ -68,6 +68,9 @@ public class TestConductor extends Observable{
 		};
 
 		if (!_recording) {
+			setChanged();
+			notifyObservers("beginRecord");
+			
 			Thread thread=new Thread(task){
 				@Override 
 				public void run(){
@@ -79,7 +82,7 @@ public class TestConductor extends Observable{
 							@Override
 							public void run() {
 								setChanged();
-								notifyObservers("recorded");
+								notifyObservers("endRecord");
 							}
 						});
 

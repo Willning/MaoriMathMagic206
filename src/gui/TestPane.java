@@ -69,8 +69,7 @@ public class TestPane extends StackPane implements Observer{
 		_record.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
-				_record.setDisable(true);
-				_commitAnswer.setDisable(true);
+
 				//disable for duraion of recording
 				tester.record();
 				
@@ -171,9 +170,12 @@ public class TestPane extends StackPane implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object recorded) {
-		if (recorded=="recorded"){
+		if (recorded=="endRecord"){
 			_record.setDisable(false);
 			_commitAnswer.setDisable(false);
+		}else if(recorded=="beginRecord"){
+			_record.setDisable(true);
+			_commitAnswer.setDisable(true);
 		}
 		
 	}
