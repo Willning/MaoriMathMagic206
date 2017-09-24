@@ -1,6 +1,8 @@
 package gui;
 
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import javafx.event.ActionEvent;
@@ -15,7 +17,7 @@ import javafx.stage.Stage;
 import testing.TestConductor;
 import testing.WordCheck;
 
-public class TestPane extends StackPane{
+public class TestPane extends StackPane implements Observer{
 	//this pane is to be generated every time 
 	//nest this in a parent pane that keeps the score?	
 	//TODO add media here to play recording
@@ -26,6 +28,9 @@ public class TestPane extends StackPane{
 	private ListMode _mode;
 	private Integer _number;
 	private Label _label;
+	
+	private Button _record;
+	private Button _commitAnswer;
 	
 	private int BUTTON_WIDTH=160;
 
@@ -41,7 +46,9 @@ public class TestPane extends StackPane{
 	    buttonBox.setTranslateX(FrameConstants.WINDOW_WIDTH/2-BUTTON_WIDTH/2);
 		
 		HBox smallerBox= new HBox();	    
-	    smallerBox.setSpacing(10);		
+	    smallerBox.setSpacing(10);
+	    
+	    tester.addObserver(this);
 			
 
 		_stage=stage;
@@ -54,25 +61,29 @@ public class TestPane extends StackPane{
 		_label.setScaleX(5);
 		_label.setScaleY(5);
 
-		Button record=new Button();
-		record.setText("Record");
-		record.setPrefSize(BUTTON_WIDTH, 75d);
+		_record=new Button();
+		_record.setText("Record");
+		_record.setPrefSize(BUTTON_WIDTH, 75d);
 		
 		
-		record.setOnAction(new EventHandler<ActionEvent>(){
+		_record.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
+				_record.setDisable(true);
+				_commitAnswer.setDisable(true);
+				//disable for duraion of recording
 				tester.record();
 				
 			}
 		});
 		
-		Button commitAnswer=new Button();
-		commitAnswer.setText("Commit Answer");
-		commitAnswer.setPrefSize(BUTTON_WIDTH, 75d);
+		_commitAnswer=new Button();
+		_commitAnswer.setText("Commit Answer");
+		_commitAnswer.setPrefSize(BUTTON_WIDTH, 75d);
+		_commitAnswer.setDisable(true);
 		
 		
-		commitAnswer.setOnAction(new EventHandler<ActionEvent>() {
+		_commitAnswer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				//either create a new testPane keeping the score and difficulty enum or reset the number
@@ -86,8 +97,7 @@ public class TestPane extends StackPane{
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				
+				}				
 
 			}
 		});
@@ -126,8 +136,8 @@ public class TestPane extends StackPane{
 		smallerBox.getChildren().add(skip);
 		
 		
-		buttonBox.getChildren().add(record);
-		buttonBox.getChildren().add(commitAnswer);
+		buttonBox.getChildren().add(_record);
+		buttonBox.getChildren().add(_commitAnswer);
 		buttonBox.getChildren().add(smallerBox);
 		buttonBox.getChildren().add(back);
 		//fix alignment of ButtonBox		
@@ -149,11 +159,22 @@ public class TestPane extends StackPane{
 		}else if(_mode.equals(ListMode.HARD)){
 			_number=randomGenerator.nextInt(98)+1;
 		}
-		
+				
 		//Depending on the enum, the number attached to this screen will have different range
+		
+		//commit is disabled by default, there has to be a recording done to commit
 
-		//Number is in the centre.
+		//Number is in the centre.		
 		_label.setText(_number.toString());
+		
+	}
+
+	@Override
+	public void update(Observable arg0, Object recorded) {
+		if (recorded=="recorded"){
+			_record.setDisable(false);
+			_commitAnswer.setDisable(false);
+		}
 		
 	}
 

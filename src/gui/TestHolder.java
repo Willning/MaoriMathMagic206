@@ -54,24 +54,24 @@ public class TestHolder extends StackPane implements Observer{
 	}
 
 	@Override
-	public void update(Observable arg0, Object answer) {		
+	public void update(Observable arg0, Object answer) {
 
-		if (answer=="Correct"){
-			numCorrect++;				
+		if (answer=="Correct"||answer=="Incorrect") {
 
-		}else if(answer=="Incorrect"){
-			numWrong++;
-		}
-		
-		_testPane.reset();
-		
-		String output=String.format("Current Score %d/%d", numCorrect,numCorrect+numWrong);
-		//Make aesthetic, maybe have a questions answered and questions correct label
-		_questionNumber.setText(output);
-		
-		
-		if (numCorrect+numWrong>=10){
-			_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+			if (answer=="Correct"){
+				numCorrect++;				
+
+			}else if(answer=="Incorrect"){
+				numWrong++;
+			}		
+			_testPane.reset();		
+			String output=String.format("Current Score %d/%d", numCorrect,numCorrect+numWrong);
+			//Make aesthetic, maybe have a questions answered and questions correct label
+			_questionNumber.setText(output);
+
+			if (numCorrect+numWrong>=10){
+				_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+			}
 		}
 
 	}

@@ -6,12 +6,12 @@ import javafx.concurrent.Task;
 
 public class WordCheck {
 	//background Task used to check what word a recording is.
-	
-	private String _heardWord=null;
-	
-	
+
+	private String _heardWord=null;	
+	private boolean correct;
 
 	public boolean concurrentTest(String expected) throws InterruptedException{
+
 		Task<String> wordCheck=new Task<String>(){
 			@Override
 			protected String call() throws Exception {
@@ -20,36 +20,45 @@ public class WordCheck {
 
 				ProcessBuilder builder=new ProcessBuilder(command);
 				builder.redirectErrorStream(true);			
-				Process process=builder.start();					
+				Process process=builder.start();			
 
 				process.waitFor();
 				//read the mlf file, once the recording finishes
 
 				String content = new String(Files.readAllBytes(Paths.get("./recout.mlf")));
-				content=content.replace("\n", "");				
+				content=content.replace("\n", " ");				
 
 				if (content.contains("sil")){
 					//if the string has sil, return the word between it.
-					String[] output=content.split("sil");
+					String[] output=content.split("sil ");
 					_heardWord=output[1];
+					_heardWord=_heardWord.substring(0, _heardWord.lastIndexOf(" "));
 				}
 				return null;
 			}
 
 		};
 
-		Thread thread=new Thread(wordCheck);
+		Thread thread=new Thread(wordCheck){
+			@Override
+			public void run(){
+				try{
+					wordCheck.run();
+				}finally{
+					if (_heardWord!=null) {
+						System.out.println(_heardWord);
+						//not accurate at all in terms of whats heard
+						correct= (_heardWord.equals(expected));
+					}else {						
+						correct=false;
+					}
+				}
+
+			}
+		};
 		thread.start();
-		
-		thread.join();
-		if (_heardWord!=null) {
-			System.out.println(_heardWord);
-			return (_heardWord.equals(expected));
-		}
-		else {
-			return false;
-		}
-		
+		//return if correct is true.
+		return correct;
 	}	
 
 }

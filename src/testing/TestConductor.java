@@ -3,6 +3,7 @@ package testing;
 import java.io.IOException;
 import java.util.Observable;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 /**
@@ -26,12 +27,10 @@ public class TestConductor extends Observable{
 
 	public void test(int input) throws InterruptedException, IOException{
 		//cannot processif _recording is true;
-
 		if (!_recording) {
 			String expected=_convert.convertNumber(input);		
 			boolean correct=_check.concurrentTest(expected);				
 			//should return what was heard as a string.
-
 			this.setChanged();	
 			if (correct){
 				this.notifyObservers("Correct");
@@ -48,7 +47,7 @@ public class TestConductor extends Observable{
 		this.notifyObservers("Incorrect");
 	}
 
-	public void record() {
+	public int record() {
 		//One recording at a time, need to add a way to send out event when recording is done
 
 		Task<String> task=new Task<String>(){
@@ -62,7 +61,6 @@ public class TestConductor extends Observable{
 				process.waitFor();
 				_recording=false;
 
-				System.out.println("done");
 
 				return null;
 
@@ -70,8 +68,29 @@ public class TestConductor extends Observable{
 		};
 
 		if (!_recording) {
-			Thread thread=new Thread(task);			
+			Thread thread=new Thread(task){
+				@Override 
+				public void run(){
+					try{
+						task.run();
+					}finally{
+						
+						Platform.runLater(new Runnable() {
+							@Override
+							public void run() {
+								setChanged();
+								notifyObservers("recorded");
+							}
+						});
+
+						//jig this up to push out an event						
+					}
+				}
+			};			
 			thread.start();			
+			return 1;			
 		}
+		return 0;
+		//0 if not recording?
 	}
 }
