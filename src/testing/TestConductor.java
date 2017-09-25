@@ -31,6 +31,9 @@ public class TestConductor extends Observable{
 			String expected=_convert.convertNumber(input);		
 			boolean correct=_check.concurrentTest(expected);				
 			//should return what was heard as a string.
+			
+			System.out.println(correct);
+			
 			this.setChanged();	
 			if (correct){
 				this.notifyObservers("Correct");

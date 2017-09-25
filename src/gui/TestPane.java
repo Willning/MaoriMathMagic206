@@ -54,14 +54,16 @@ public class TestPane extends StackPane implements Observer{
 		_stage=stage;
 		_mode=mode;
 		
+		_commitAnswer=new Button();
+		_record=new Button();
+		
 		_label=new Label();
 		//Have a parameter to decide whether it was the hard mode or the easy mode
 		reset();
 
 		_label.setScaleX(5);
 		_label.setScaleY(5);
-
-		_record=new Button();
+		
 		_record.setText("Record");
 		_record.setPrefSize(BUTTON_WIDTH, 75d);
 		
@@ -76,7 +78,7 @@ public class TestPane extends StackPane implements Observer{
 			}
 		});
 		
-		_commitAnswer=new Button();
+		
 		_commitAnswer.setText("Commit Answer");
 		_commitAnswer.setPrefSize(BUTTON_WIDTH, 75d);
 		_commitAnswer.setDisable(true);
@@ -165,6 +167,7 @@ public class TestPane extends StackPane implements Observer{
 
 		//Number is in the centre.		
 		_label.setText(_number.toString());
+		_commitAnswer.setDisable(true);
 		
 	}
 

@@ -46,9 +46,13 @@ public class WordCheck {
 					wordCheck.run();
 				}finally{
 					if (_heardWord!=null) {
-						System.out.println(_heardWord);
+											
+						System.out.println(_heardWord.compareTo(expected));						
+										
 						//not accurate at all in terms of whats heard
-						correct= (_heardWord.equals(expected));
+						
+						correct= (_heardWord.compareTo(expected)==0);			
+											
 					}else {						
 						correct=false;
 					}
@@ -57,7 +61,9 @@ public class WordCheck {
 			}
 		};
 		thread.start();
-		//return if correct is true.
+				
+		//fandangle your way so this thread.join() is not needed later on, but it works now
+		thread.join();
 		return correct;
 	}	
 
