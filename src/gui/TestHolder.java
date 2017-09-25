@@ -10,9 +10,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import testing.TestConductor;
 
-public class TestHolder extends StackPane implements Observer{
-	//this is a pane that holds one TestPane, what this will do is keep track of the score.
-	//i.e. this is the rootPane
+/**
+ * this is a pane that holds one TestPane, what this will do is keep track of the score.
+ * i.e. this is the rootPane
+ */
+public class TestHolder extends StackPane implements Observer {
 
 	private Integer numCorrect=0;
 	private Integer numWrong=0;
@@ -23,28 +25,26 @@ public class TestHolder extends StackPane implements Observer{
 
 	private TestPane _testPane;
 
-
 	private Label _questionNumber;
 
-	public TestHolder(Stage stage, ListMode mode){		
-		_stage=stage;
-		_mode=mode;
+	public TestHolder(Stage stage, ListMode mode) {		
+		_stage = stage;
+		_mode = mode;
 
-
-		_tester=new TestConductor();
+		_tester = new TestConductor();
 		_tester.addObserver(this);
 
-		_testPane=new TestPane(_stage,_mode,_tester);
+		_testPane = new TestPane(_stage, _mode, _tester);
 
-		_questionNumber=new Label();
+		_questionNumber = new Label();
 		_questionNumber.setText("Current Score:0/0");
 
 		_questionNumber.setScaleX(2);
 		_questionNumber.setScaleY(2);
 
+		//@@TODO: put this into a nice location
 		_questionNumber.setTranslateX(-250);
 		_questionNumber.setTranslateY(-250d);
-		//TODO, put this into a nice location
 
 		this.getChildren().add(_questionNumber);
 		this.getChildren().add(_testPane);

@@ -7,65 +7,64 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 /**
- * This class is responsible for doing the testing, records and fires correct/incorrect, calls the HTK.
- * @author William
- *
+ * This class is responsible for doing the testing, recording and firing 'correct'/'incorrect',
+ * and calling HTK.
  */
-public class TestConductor extends Observable{
+public class TestConductor extends Observable {
 
 	private IntegerMaoriConverter _convert;
-	WordCheck _check=new WordCheck();
+	WordCheck _check = new WordCheck();
 
-	private boolean _recording=false; //this is a state variable, true when recording
+	private boolean _recording = false;
 
-
-
-	public TestConductor(){
-		_convert=new IntegerMaoriConverter();
-
+	public TestConductor() {
+		_convert = new IntegerMaoriConverter();
 	}
 
-	public void test(int input) throws InterruptedException, IOException{
-		//cannot processif _recording is true;
+	public void test(int input) throws InterruptedException, IOException {
+		
+		// Cannot process if _recording is true:
 		if (!_recording) {
-			String expected=_convert.convertNumber(input);		
-			boolean correct=_check.concurrentTest(expected);				
-			//should return what was heard as a string.
+			// Should return what was heard as a string.
+			String expected = _convert.convertNumber(input);		
+			boolean correct = _check.concurrentTest(expected);				
 					
-			
 			this.setChanged();	
-			if (correct){
+			if (correct) {
 				this.notifyObservers("Correct");
-			}else{
+			}
+			else {
 				this.notifyObservers("Incorrect");
 			}
 		}
-
 	}
 
-	public void skip(){
-		//Used for skipping a question, defaults to incorrect
+	/**
+	 * Used for skipping a question, defaults to incorrect
+	 */
+	public void skip() {
 		this.setChanged();
 		this.notifyObservers("Incorrect");
 	}
 
 	public int record() {
-		//One recording at a time, need to add a way to send out event when recording is done
 
-		Task<String> task=new Task<String>(){
-			//This method is responsible for creating a thread that does the recording, send a event when recording ends.
-			protected String call() throws IOException, InterruptedException{
-				_recording=true;
-				String[] command={"/bin/bash", "./record.sh"};
-				ProcessBuilder builder=new ProcessBuilder(command);
+		Task<String> task=new Task<String >(){
+			
+			/**
+			 * This method is responsible for creating a thread that does the recording,
+			 * and sending an event when recording ends.
+			 */
+			protected String call() throws IOException, InterruptedException {
+				_recording = true;
+				String[] command = {"/bin/bash", "./record.sh"};
+				ProcessBuilder builder = new ProcessBuilder(command);
 				builder.redirectErrorStream(true);
-				Process process=builder.start();				
+				Process process = builder.start();				
 				process.waitFor();
-				_recording=false;
-
+				_recording = false;
 
 				return null;
-
 			}
 		};
 
@@ -73,13 +72,14 @@ public class TestConductor extends Observable{
 			setChanged();
 			notifyObservers("beginRecord");
 			
-			Thread thread=new Thread(task){
+			Thread thread = new Thread(task){
 				@Override 
-				public void run(){
-					try{
+				public void run() {
+					try {
 						task.run();
-					}finally{
-						
+					}
+					finally {
+						//@@TODO: jig this up to push out an event						
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
@@ -87,15 +87,13 @@ public class TestConductor extends Observable{
 								notifyObservers("endRecord");
 							}
 						});
-
-						//jig this up to push out an event						
 					}
 				}
 			};			
 			thread.start();			
 			return 1;			
 		}
+		//@@TODO: 0 if not recording?
 		return 0;
-		//0 if not recording?
 	}
 }

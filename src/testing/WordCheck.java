@@ -4,57 +4,57 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import javafx.concurrent.Task;
 
+/**
+ * Background task, used to check what word a recording is.
+ */
 public class WordCheck {
-	//background Task used to check what word a recording is.
 
-	private String _heardWord=null;	
+	private String _heardWord = null;	
 	private boolean correct;
 
-	public boolean concurrentTest(String expected) throws InterruptedException{
+	public boolean concurrentTest(String expected) throws InterruptedException {
 
-		Task<String> wordCheck=new Task<String>(){
+		Task<String> wordCheck = new Task<String>() {
 			@Override
 			protected String call() throws Exception {
-				//Start HTK and get the word returned.
-				String[] command={"/bin/bash", "./check.sh"};
+				// Start HTK and get the word returned.
+				String[] command = {"/bin/bash", "./check.sh"};
 
-				ProcessBuilder builder=new ProcessBuilder(command);
+				ProcessBuilder builder = new ProcessBuilder(command);
 				builder.redirectErrorStream(true);			
-				Process process=builder.start();			
+				Process process = builder.start();			
 
 				process.waitFor();
-				//read the mlf file, once the recording finishes
 
+				// Read the mlf file, once the recording finishes:
 				String content = new String(Files.readAllBytes(Paths.get("./recout.mlf")));
-				content=content.replace("\n", " ");				
+				content = content.replace("\n", " ");				
 
-				if (content.contains("sil")){
-					//if the string has sil, return the word between it.
-					String[] output=content.split("sil ");
-					_heardWord=output[1];
-					_heardWord=_heardWord.substring(0, _heardWord.lastIndexOf(" "));
+				// If the string has "sil ", return the word between it.
+				if (content.contains("sil")) {
+					String[] output = content.split("sil ");
+					_heardWord = output[1];
+					_heardWord = _heardWord.substring(0, _heardWord.lastIndexOf(" "));
 				}
 				return null;
 			}
-
 		};
 
-		Thread thread=new Thread(wordCheck){
+		Thread thread = new Thread(wordCheck) {
 			@Override
-			public void run(){
-				try{
+			public void run() {
+				try {
 					wordCheck.run();
-				}finally{
-					if (_heardWord!=null) {
+				}
+				finally {
+					if (_heardWord != null) {
 											
 						System.out.println(_heardWord.compareTo(expected));						
 										
-						//not accurate at all in terms of whats heard
-						
-						correct= (_heardWord.compareTo(expected)==0);			
-											
-					}else {						
-						correct=false;
+						correct = (_heardWord.compareTo(expected) == 0);								
+					}
+					else {						
+						correct = false;
 					}
 				}
 
@@ -62,7 +62,7 @@ public class WordCheck {
 		};
 		thread.start();
 				
-		//fandangle your way so this thread.join() is not needed later on, but it works now
+		//@@TODO: fandangle your way so this thread.join() is not needed later on, but it works now
 		thread.join();
 		return correct;
 	}	

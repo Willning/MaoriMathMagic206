@@ -8,29 +8,30 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class StartPane extends StackPane{
-	//This is the first Screen that the user will see, the stage is created in Main and then passed between all the scenes.
+/**
+ * This is the first Screen that the user will see.
+ * The stage is created in Main and then passed between all the scenes. 
+ */
+public class StartPane extends StackPane {
 
-	public StartPane(Stage stage){
+	public StartPane(Stage stage) {
 		super();
+		
 		Button btn = new Button();
 		btn.setText("Start");
 		btn.setPrefSize(100d, 75d);
 		btn.setTranslateY(200d);
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-			stage.setScene(new Scene(new ListSelectPane(stage), FrameConstants.WINDOW_WIDTH ,FrameConstants.WINDOW_HEIGHT));
+		btn.setOnAction(e -> {
+			stage.setScene(new Scene(
+				new ListSelectPane(stage), 
+				FrameConstants.WINDOW_WIDTH, 
+				FrameConstants.WINDOW_HEIGHT
+			));
 			stage.sizeToScene();
-			
-			}
 		});
 		
-		Label label=new Label();
+		Label label = new Label();
 		label.setText("Maori Maths Magic");
-		
-		
 		label.setScaleX(5);
 		label.setScaleY(5);
 
