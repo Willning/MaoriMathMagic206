@@ -47,7 +47,7 @@ public class TestConductor extends Observable {
 		this.notifyObservers("Incorrect");
 	}
 
-	public int record() {
+	public void record() {
 
 		Task<String> task=new Task<String >(){
 			
@@ -67,33 +67,20 @@ public class TestConductor extends Observable {
 				return null;
 			}
 		};
+		
+		task.setOnSucceeded(e->{
+			this.setChanged();
+			this.notifyObservers("endRecord");
+		});
 
 		if (!_recording) {
 			setChanged();
 			notifyObservers("beginRecord");
 			
-			Thread thread = new Thread(task){
-				@Override 
-				public void run() {
-					try {
-						task.run();
-					}
-					finally {
-						//@@TODO: jig this up to push out an event						
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								setChanged();
-								notifyObservers("endRecord");
-							}
-						});
-					}
-				}
-			};			
+			Thread thread = new Thread(task);			
 			thread.start();			
-			return 1;			
-		}
-		//@@TODO: 0 if not recording?
-		return 0;
+			return;		
+		}		
+		
 	}
 }

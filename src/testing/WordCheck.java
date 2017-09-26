@@ -3,6 +3,8 @@ package testing;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 
 /**
  * Background task, used to check what word a recording is.
@@ -39,31 +41,31 @@ public class WordCheck {
 				return null;
 			}
 		};
+		
+		//On succeed, will write correct as the word that was heard.
+		wordCheck.setOnSucceeded(e -> {
+			if (_heardWord != null) {
+				System.out.println(_heardWord.compareTo(expected));						
+
+				correct = (_heardWord.compareTo(expected) == 0);												
+			}
+			else {						
+				correct = false;
+			}		
+
+		});
 
 		Thread thread = new Thread(wordCheck) {
 			@Override
 			public void run() {
-				try {
-					wordCheck.run();
-				}
-				finally {
-					if (_heardWord != null) {
-											
-						System.out.println(_heardWord.compareTo(expected));						
-										
-						correct = (_heardWord.compareTo(expected) == 0);								
-					}
-					else {						
-						correct = false;
-					}
-				}
-
+				wordCheck.run();
 			}
+
 		};
 		thread.start();
-				
+
 		//@@TODO: fandangle your way so this thread.join() is not needed later on, but it works now
-		thread.join();
+		
 		return correct;
 	}	
 

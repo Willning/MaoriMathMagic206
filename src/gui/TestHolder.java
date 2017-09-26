@@ -57,6 +57,7 @@ public class TestHolder extends StackPane implements Observer {
 	public void update(Observable arg0, Object answer) {
 
 		if (answer=="Correct"||answer=="Incorrect") {
+						
 			if (answer=="Correct"){
 				numCorrect++;
 				System.out.println("correct");
