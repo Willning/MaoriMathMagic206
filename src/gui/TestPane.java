@@ -36,6 +36,7 @@ public class TestPane extends StackPane implements Observer {
 	private Label _qLabel;
 
 	private Label _correctness;
+	private Label _correctAnswers;
 
 	private Button _record;
 	private Button _commitAnswer;
@@ -48,9 +49,13 @@ public class TestPane extends StackPane implements Observer {
 	//_playing is a state variable, other actions are locked if _playing is true.
 	private boolean _playing;
 	private int _questionNumber=1;
+	private Integer numCorrect=0;
 
-	public TestPane(Stage stage, ListMode mode, TestConductor tester) {
+
+	public TestPane(Stage stage, ListMode mode) {
 		super();
+		
+		TestConductor tester = new TestConductor();
 
 		VBox buttonBox = new VBox();
 		//Use this to properly pad all the buttons
@@ -72,6 +77,14 @@ public class TestPane extends StackPane implements Observer {
 		_label = new Label();
 		_qLabel=new Label();
 		_correctness = new Label();
+		_correctAnswers = new Label();
+		
+		
+		_correctAnswers.setText("Correct Answers: 0");
+		_correctAnswers.setScaleX(2);
+		_correctAnswers.setScaleY(2);
+		_correctAnswers.setTranslateY(-250d);
+
 
 		_qLabel.setText(String.format("Question #%s", _questionNumber));
 		_qLabel.setTranslateY(-140);
@@ -111,11 +124,19 @@ public class TestPane extends StackPane implements Observer {
 		_next.setText("Next Question");
 		_next.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);		
 		_next.setOnAction(e ->{
-			this.reset();
-			_questionNumber++;
-			_qLabel.setText(String.format("Question #%s", _questionNumber));
+			if (_questionNumber <= 10){
+				this.reset();
+				_questionNumber++;
+				_qLabel.setText(String.format("Question #%s", _questionNumber));
+				
+				if(_questionNumber == 10) {
+					_next.setText("Finish quiz");
+				}
+			}else{				
+				_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+			}
 		});
-		
+
 		_next.setDisable(true);
 
 		_play = new Button();
@@ -172,6 +193,7 @@ public class TestPane extends StackPane implements Observer {
 		this.getChildren().add(back);
 
 		this.getChildren().add(_correctness);
+		this.getChildren().add(_correctAnswers);
 		this.getChildren().add(_label);
 		this.getChildren().add(_qLabel);
 
@@ -220,6 +242,11 @@ public class TestPane extends StackPane implements Observer {
 			_play.setDisable(true);
 		}
 		else if (recorded == "Correct"){
+			
+			numCorrect++;
+			String output=String.format("Correct Answers: %d", numCorrect);			
+			_correctAnswers.setText(output);
+			
 			_correctness.setText("Correct");
 			_correctness.setVisible(true);
 			_record.setDisable(true);

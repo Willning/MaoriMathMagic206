@@ -27,7 +27,7 @@ public class ListSelectPane extends StackPane {
 		
 		easy.setOnAction(e -> {
 			_stage.setScene(new Scene(
-				new TestHolder(_stage, ListMode.EASY), 
+				new TestPane(_stage, ListMode.EASY), 
 				FrameConstants.WINDOW_WIDTH, 
 				FrameConstants.WINDOW_HEIGHT
 			));
@@ -41,7 +41,7 @@ public class ListSelectPane extends StackPane {
 		
 		hard.setOnAction(e -> {
 			_stage.setScene(new Scene(
-				new TestHolder(_stage, ListMode.HARD), 
+				new TestPane(_stage, ListMode.HARD), 
 				FrameConstants.WINDOW_WIDTH, 
 				FrameConstants.WINDOW_HEIGHT
 			));

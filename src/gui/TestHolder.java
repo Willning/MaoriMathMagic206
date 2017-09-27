@@ -17,7 +17,7 @@ import testing.TestConductor;
 public class TestHolder extends StackPane implements Observer {
 
 	private Integer numCorrect=0;
-	private Integer numWrong=0;
+
 
 	private Stage _stage;
 	private final ListMode _mode;
@@ -34,7 +34,7 @@ public class TestHolder extends StackPane implements Observer {
 		_tester = new TestConductor();
 		_tester.addObserver(this);
 
-		_testPane = new TestPane(_stage, _mode, _tester);
+		_testPane = new TestPane(_stage, _mode);
 
 		_questionNumber = new Label();
 		_questionNumber.setText("Correct Answers: 0");
@@ -51,6 +51,10 @@ public class TestHolder extends StackPane implements Observer {
 
 
 	}
+	
+	public void transition(){
+		_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
+	}
 
 	@Override
 	public void update(Observable arg0, Object answer) {
@@ -58,23 +62,15 @@ public class TestHolder extends StackPane implements Observer {
 		if (answer=="Correct"||answer=="Incorrect") {
 						
 			if (answer=="Correct"){
-				numCorrect++;
-				
+				numCorrect++;				
 
-			}else if(answer=="Incorrect"){
-				numWrong++;
-				
-			}			
-			//reset based on next button only now
-						
+			}	
+			//reset based on next button only now						
 						
 			String output=String.format("Correct Answers: %d", numCorrect);
 			//Make aesthetic, maybe have a questions answered and questions correct label
 			_questionNumber.setText(output);
 
-			if (numCorrect+numWrong>=10){
-				_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
-			}
 		}
 
 	}
