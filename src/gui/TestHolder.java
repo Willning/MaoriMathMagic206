@@ -59,13 +59,12 @@ public class TestHolder extends StackPane implements Observer {
 						
 			if (answer=="Correct"){
 				numCorrect++;
-				_testPane.mark(true);
+				
 
 			}else if(answer=="Incorrect"){
 				numWrong++;
-				_testPane.mark(false);
-			}
-			
+				
+			}			
 			//reset based on next button only now
 						
 						

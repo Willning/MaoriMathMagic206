@@ -33,6 +33,8 @@ public class TestPane extends StackPane implements Observer {
 	private Integer _number;
 	private Label _label;
 
+	private Label _qLabel;
+
 	private Label _correctness;
 
 	private Button _record;
@@ -42,9 +44,10 @@ public class TestPane extends StackPane implements Observer {
 
 	private int BUTTON_WIDTH = 160;
 	private int BUTTON_HEIGHT=30;
-	
+
 	//_playing is a state variable, other actions are locked if _playing is true.
 	private boolean _playing;
+	private int _questionNumber=1;
 
 	public TestPane(Stage stage, ListMode mode, TestConductor tester) {
 		super();
@@ -67,10 +70,17 @@ public class TestPane extends StackPane implements Observer {
 		_record = new Button();
 		_play=new Button();
 		_label = new Label();
+		_qLabel=new Label();
 		_correctness = new Label();
 
+		_qLabel.setText(String.format("Question #%s", _questionNumber));
+		_qLabel.setTranslateY(-140);
+		_qLabel.setScaleX(1.5);
+		_qLabel.setScaleY(1.5);
+
+
 		_correctness.setTranslateY(-40d);
-		
+
 
 
 		_record.setText("Record");
@@ -100,7 +110,12 @@ public class TestPane extends StackPane implements Observer {
 		_next = new Button();
 		_next.setText("Next Question");
 		_next.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);		
-		_next.setOnAction(e -> this.reset());
+		_next.setOnAction(e ->{
+			this.reset();
+			_questionNumber++;
+			_qLabel.setText(String.format("Question #%s", _questionNumber));
+		});
+		
 		_next.setDisable(true);
 
 		_play = new Button();
@@ -125,7 +140,7 @@ public class TestPane extends StackPane implements Observer {
 				});
 			}
 		});
-		
+
 
 		Button back = new Button();		
 		back.setText("Exit");
@@ -158,7 +173,8 @@ public class TestPane extends StackPane implements Observer {
 
 		this.getChildren().add(_correctness);
 		this.getChildren().add(_label);
-		
+		this.getChildren().add(_qLabel);
+
 		reset();
 
 	}
@@ -178,7 +194,7 @@ public class TestPane extends StackPane implements Observer {
 			_number = randomGenerator.nextInt(98) + 1;
 		}
 		// Number is in the centre.
-		
+
 		_label.setText(_number.toString());
 		_label.setScaleX(5);
 		_label.setScaleY(5);
@@ -190,17 +206,6 @@ public class TestPane extends StackPane implements Observer {
 
 	}
 
-	/*
-	 * Use this to transition between answering screen and marked Screen. marking will create a new button called next question,
-	 * Mark should also show an indicator as to whether the answer given is correct or wrong
-	 */
-
-	public void mark(boolean correct){
-		if (correct){
-
-		}
-
-	}
 
 	@Override
 	public void update(Observable arg0, Object recorded) {
