@@ -3,8 +3,6 @@ package testing;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
 /**
  * Background task, used to check what word a recording is.

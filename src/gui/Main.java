@@ -2,10 +2,8 @@ package gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 //@@TODO: rejig the constants to a constants class 
 //@@TODO: make a media player to play the recording

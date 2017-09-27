@@ -3,7 +3,6 @@ package testing;
 import java.io.IOException;
 import java.util.Observable;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 /**

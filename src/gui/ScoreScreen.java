@@ -1,7 +1,5 @@
 package gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -70,7 +68,7 @@ public class ScoreScreen extends StackPane{
 			
 			advance.setOnAction(e -> {
 				_stage.setScene(new Scene(
-					new TestHolder(_stage, ListMode.HARD), 
+					new TestPane(_stage, ListMode.HARD), 
 					FrameConstants.WINDOW_WIDTH, 
 					FrameConstants.WINDOW_HEIGHT
 				));

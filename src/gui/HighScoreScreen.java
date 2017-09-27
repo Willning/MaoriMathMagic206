@@ -2,6 +2,8 @@ package gui;
 
 import java.util.List;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.StackPane;
@@ -45,7 +47,6 @@ public class HighScoreScreen extends StackPane {
 		
 
 
-
 		easyList = listAdapt(scoreManager.returnList(ListMode.EASY));
 		easyList.setMaxHeight(400d);
 		easyList.setMaxWidth(100d);
@@ -64,7 +65,19 @@ public class HighScoreScreen extends StackPane {
 		hardBox.getChildren().add(hardLabel);
 		hardBox.getChildren().add(hardList);
 		hardBox.setTranslateX(700d);
-			
+		
+		Button back = new Button();
+		back.setText("Back");
+		back.setPrefSize(200d, 100d);
+		back.setOnAction(e -> {
+			stage.setScene(new Scene(
+				new StartPane(stage), 
+				FrameConstants.WINDOW_WIDTH, 
+				FrameConstants.WINDOW_HEIGHT
+			));
+			stage.sizeToScene();
+		});
+		this.getChildren().add(back);
 		this.getChildren().add(easyBox);
 		this.getChildren().add(hardBox);
 		this.getChildren().add(highScoreTitle);
@@ -75,7 +88,7 @@ public class HighScoreScreen extends StackPane {
 
 		ListView<Integer> outputList = new ListView<Integer>();
 		if (inputs.isEmpty()){
-			outputList.getItems().add(0);
+			outputList.getItems().add(0);			
 		}
 		else{
 			for (Integer integer : inputs){

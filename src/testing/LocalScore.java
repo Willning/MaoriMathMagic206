@@ -11,8 +11,8 @@ import gui.ListMode;
  */
 public class LocalScore {
 	
-	private List<Integer> EasyScores = new ArrayList<Integer>();
-	private List<Integer> HardScores = new ArrayList<Integer>();
+	private static List<Integer> EasyScores = new ArrayList<Integer>();
+	private static  List<Integer> HardScores = new ArrayList<Integer>();
 	
 	private static LocalScore instance = null;
 	
