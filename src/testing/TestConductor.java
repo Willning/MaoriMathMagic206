@@ -13,7 +13,7 @@ import javafx.concurrent.Task;
 public class TestConductor extends Observable {
 
 	private IntegerMaoriConverter _convert;
-	WordCheck _check = new WordCheck();
+	WordCheck _check = new WordCheck(this);
 
 	private boolean _recording = false;
 
@@ -27,22 +27,17 @@ public class TestConductor extends Observable {
 		if (!_recording) {
 			// Should return what was heard as a string.
 			String expected = _convert.convertNumber(input);		
-			boolean correct = _check.concurrentTest(expected);				
-					
-			this.setChanged();	
-			if (correct) {
-				this.notifyObservers("Correct");
-			}
-			else {
-				this.notifyObservers("Incorrect");
-			}
+			_check.concurrentTest(expected);			
+
 		}
 	}
-
-	/**
-	 * Used for skipping a question, defaults to incorrect
-	 */
-	public void skip() {
+	
+	public void correct() {
+		this.setChanged();
+		this.notifyObservers("Correct");
+	}
+	
+	public void incorrect() {
 		this.setChanged();
 		this.notifyObservers("Incorrect");
 	}

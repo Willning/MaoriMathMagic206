@@ -12,9 +12,13 @@ import javafx.event.EventHandler;
 public class WordCheck {
 
 	private String _heardWord = null;	
-	private boolean correct;
+	private TestConductor _parent;
+	
+	public WordCheck(TestConductor tester) {
+		_parent=tester;
+	}
 
-	public boolean concurrentTest(String expected) throws InterruptedException {
+	public void concurrentTest(String expected) throws InterruptedException {
 
 		Task<String> wordCheck = new Task<String>() {
 			@Override
@@ -43,14 +47,13 @@ public class WordCheck {
 		};
 		
 		//On succeed, will write correct as the word that was heard.
-		wordCheck.setOnSucceeded(e -> {
-			if (_heardWord != null) {
-				System.out.println(_heardWord.compareTo(expected));						
-
-				correct = (_heardWord.compareTo(expected) == 0);												
+		wordCheck.setOnSucceeded(e -> {			
+			if (_heardWord != null&&_heardWord.equals(expected)) {			
+								
+				_parent.correct();												
 			}
 			else {						
-				correct = false;
+				_parent.incorrect();				
 			}		
 
 		});
@@ -63,10 +66,8 @@ public class WordCheck {
 
 		};
 		thread.start();
+	
 
-		//@@TODO: fandangle your way so this thread.join() is not needed later on, but it works now
-		
-		return correct;
 	}	
 
 }

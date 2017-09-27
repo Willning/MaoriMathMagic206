@@ -1,7 +1,5 @@
 package gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +10,8 @@ import javafx.stage.Stage;
  * This is the first Screen that the user will see.
  * The stage is created in Main and then passed between all the scenes. 
  */
+//@@TODO add an instruction screen button
+
 public class StartPane extends StackPane {
 
 	public StartPane(Stage stage) {
@@ -31,7 +31,7 @@ public class StartPane extends StackPane {
 		});
 		
 		Label label = new Label();
-		label.setText("Maori Maths Magic");
+		label.setText("Tāitai");
 		label.setScaleX(5);
 		label.setScaleY(5);
 

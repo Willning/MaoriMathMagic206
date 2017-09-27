@@ -20,7 +20,7 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) {
-		primaryStage.setTitle("MaoriMathsMagic");
+		primaryStage.setTitle("Tāitai");
 				
 		primaryStage.setScene(new Scene(
 			new StartPane(primaryStage), 

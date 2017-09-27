@@ -37,18 +37,17 @@ public class TestHolder extends StackPane implements Observer {
 		_testPane = new TestPane(_stage, _mode, _tester);
 
 		_questionNumber = new Label();
-		_questionNumber.setText("Current Score:0/0");
+		_questionNumber.setText("Correct Answers: 0");
 
 		_questionNumber.setScaleX(2);
 		_questionNumber.setScaleY(2);
 
 		//@@TODO: put this into a nice location
-		_questionNumber.setTranslateX(-250);
+	
 		_questionNumber.setTranslateY(-250d);
 
 		this.getChildren().add(_questionNumber);
 		this.getChildren().add(_testPane);
-
 
 
 	}
@@ -60,13 +59,17 @@ public class TestHolder extends StackPane implements Observer {
 						
 			if (answer=="Correct"){
 				numCorrect++;
-				System.out.println("correct");
+				_testPane.mark(true);
 
 			}else if(answer=="Incorrect"){
 				numWrong++;
-			}		
-			_testPane.reset();		
-			String output=String.format("Current Score %d/%d", numCorrect,numCorrect+numWrong);
+				_testPane.mark(false);
+			}
+			
+			//reset based on next button only now
+						
+						
+			String output=String.format("Correct Answers: %d", numCorrect);
 			//Make aesthetic, maybe have a questions answered and questions correct label
 			_questionNumber.setText(output);
 
