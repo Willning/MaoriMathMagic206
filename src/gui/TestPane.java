@@ -235,11 +235,14 @@ public class TestPane extends StackPane implements Observer {
 			_record.setDisable(false);
 			_commitAnswer.setDisable(false);
 			_play.setDisable(false);
+			_correctness.setVisible(false);
 		}
 		else if(recorded == "beginRecord") {
 			_record.setDisable(true);
 			_commitAnswer.setDisable(true);
 			_play.setDisable(true);
+			_correctness.setText("Recording...");
+			_correctness.setVisible(true);
 		}
 		else if (recorded == "Correct"){
 			

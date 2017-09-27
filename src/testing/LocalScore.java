@@ -14,6 +14,13 @@ public class LocalScore {
 	private static List<Integer> EasyScores = new ArrayList<Integer>();
 	private static  List<Integer> HardScores = new ArrayList<Integer>();
 	
+	private static int easyGamesPlayed;
+	private static int easyHighScore;
+	
+	private static int hardGamesPlayed;
+	private static int hardHighScore;
+	
+	
 	private static LocalScore instance = null;
 	
 	private LocalScore(){
