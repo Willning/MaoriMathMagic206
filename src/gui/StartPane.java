@@ -1,7 +1,5 @@
 package gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,7 +29,7 @@ public class StartPane extends StackPane {
 		});
 		
 		Label label = new Label();
-		label.setText("Maori Maths Magic");
+		label.setText("Tāitai");
 		label.setScaleX(5);
 		label.setScaleY(5);
 

@@ -50,7 +50,6 @@ public class TestHolder extends StackPane implements Observer {
 		this.getChildren().add(_testPane);
 
 
-
 	}
 
 	@Override
@@ -64,8 +63,11 @@ public class TestHolder extends StackPane implements Observer {
 
 			}else if(answer=="Incorrect"){
 				numWrong++;
-			}		
-			_testPane.reset();		
+			}
+			
+			
+			_testPane.reset();
+						
 			String output=String.format("Current Score %d/%d", numCorrect,numCorrect+numWrong);
 			//Make aesthetic, maybe have a questions answered and questions correct label
 			_questionNumber.setText(output);

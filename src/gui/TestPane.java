@@ -5,8 +5,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,13 +13,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import testing.TestConductor;
-import testing.WordCheck;
 
-//@@TODO: add media here to play recording
 //@@TODO: add a correct/incorrect indicator
+//@@TODO: add a stage after answering to show correct/incorrect;
+
+//@@TODO reorganize buttons so that things look nicer
+
 /**
- * This pane is to be generated every time 
- * nest this in a parent pane that keeps the score?	
+ * This pane is to be generated every time a new question needs to be asked, generates a number and contains 
+ * buttons to do relevant actions 
  */
 public class TestPane extends StackPane implements Observer {
 
@@ -29,6 +29,8 @@ public class TestPane extends StackPane implements Observer {
 	private ListMode _mode;
 	private Integer _number;
 	private Label _label;
+	
+	private Label _correctness;
 	
 	private Button _record;
 	private Button _commitAnswer;
@@ -55,11 +57,15 @@ public class TestPane extends StackPane implements Observer {
 		_commitAnswer = new Button();
 		_record = new Button();
 		_label = new Label();
-
+		_correctness = new Label();
+						
+		_correctness.setTranslateY(-40d);
 		reset();
 
 		_label.setScaleX(5);
 		_label.setScaleY(5);
+		
+		
 		
 		_record.setText("Record");
 		_record.setPrefSize(BUTTON_WIDTH, 75d);
@@ -120,7 +126,8 @@ public class TestPane extends StackPane implements Observer {
 		buttonBox.getChildren().add(back);
 
 		// Put this into a HBox, then put the HBox into the buttonBox		
-		this.getChildren().add(buttonBox);		
+		this.getChildren().add(buttonBox);	
+		this.getChildren().add(_correctness);
 		this.getChildren().add(_label);
 	}
 	
@@ -142,6 +149,7 @@ public class TestPane extends StackPane implements Observer {
 		// Number is in the centre.		
 		_label.setText(_number.toString());
 		_commitAnswer.setDisable(true);
+		_correctness.setVisible(false);
 	}
 
 	@Override
@@ -153,6 +161,17 @@ public class TestPane extends StackPane implements Observer {
 		else if(recorded == "beginRecord") {
 			_record.setDisable(true);
 			_commitAnswer.setDisable(true);
+		}
+		else if (recorded == "Correct"){
+			_correctness.setText("Correct");
+			_correctness.setVisible(true);			
+			
+		}
+		else if (recorded == "Incorrect"){
+			
+			_correctness.setText("Incorrect");
+			_correctness.setVisible(true);		
+			
 		}
 	}
 
