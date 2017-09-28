@@ -25,13 +25,7 @@ public class ListSelectPane extends StackPane {
 		easy.setPrefSize(100d, 75d);
 		easy.setTranslateY(80d);
 		
-		easy.setOnAction(e -> {
-			_stage.setScene(new Scene(
-				new TestPane(_stage, ListMode.EASY), 
-				FrameConstants.WINDOW_WIDTH, 
-				FrameConstants.WINDOW_HEIGHT
-			));
-		});
+		easy.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.EASY_TEST));
 		
 		// Button for hard List (1-100)
 		Button hard = new Button();
@@ -39,13 +33,7 @@ public class ListSelectPane extends StackPane {
 		hard.setPrefSize(100d, 75d);
 		hard.setTranslateY(160d);
 		
-		hard.setOnAction(e -> {
-			_stage.setScene(new Scene(
-				new TestPane(_stage, ListMode.HARD), 
-				FrameConstants.WINDOW_WIDTH, 
-				FrameConstants.WINDOW_HEIGHT
-			));
-		});
+		hard.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HARD_TEST));
 		
 		Label label = new Label();
 		label.setText("Select Difficulty List");
@@ -59,14 +47,7 @@ public class ListSelectPane extends StackPane {
 		back.setTranslateY(270d);
 		
 		// Back button will bring us back to the start menu 
-		back.setOnAction(e -> {
-			_stage.setScene(new Scene(
-				new StartPane(_stage), 
-				FrameConstants.WINDOW_WIDTH, 
-				FrameConstants.WINDOW_HEIGHT
-			));
-			_stage.sizeToScene();
-		});
+		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
 		
 		this.getChildren().add(label);
 		this.getChildren().add(easy); 

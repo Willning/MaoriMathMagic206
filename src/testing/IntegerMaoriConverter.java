@@ -1,14 +1,14 @@
 package testing;
 
 /**
- * This class is responsible for having an enum of the numbers
+ * This class is responsible for converting a number to words.
  */
 public class IntegerMaoriConverter {
 
 	/**
 	 * Convert a digit to a Te Reo word.
 	 */
-	private String convertDigit(int digit){
+	private String convertDigit(int digit) {
 		String output = null;
 		switch (digit) {
 			case 1:

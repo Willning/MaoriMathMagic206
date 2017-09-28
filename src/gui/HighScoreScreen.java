@@ -69,19 +69,12 @@ public class HighScoreScreen extends StackPane {
 		Button back = new Button();
 		back.setText("Back");
 		back.setPrefSize(200d, 100d);
-		back.setOnAction(e -> {
-			stage.setScene(new Scene(
-				new StartPane(stage), 
-				FrameConstants.WINDOW_WIDTH, 
-				FrameConstants.WINDOW_HEIGHT
-			));
-			stage.sizeToScene();
-		});
+		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
+		
 		this.getChildren().add(back);
 		this.getChildren().add(easyBox);
 		this.getChildren().add(hardBox);
 		this.getChildren().add(highScoreTitle);
-
 	}
 
 	public ListView<Integer> listAdapt(List<Integer> inputs){

@@ -21,28 +21,14 @@ public class StartPane extends StackPane {
 		btn.setText("Start");
 		btn.setPrefSize(100d, 75d);
 		btn.setTranslateY(150d);
-		btn.setOnAction(e -> {
-			stage.setScene(new Scene(
-					new ListSelectPane(stage), 
-					FrameConstants.WINDOW_WIDTH, 
-					FrameConstants.WINDOW_HEIGHT
-					));
-			stage.sizeToScene();
-		});
-
+		btn.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.LIST));
 
 		Button highScore = new Button(); 
 		highScore.setText("HighScores");
 		highScore.setPrefSize(100d,75d);
 		highScore.setTranslateY(230d);
 
-		highScore.setOnAction(e -> {
-			stage.setScene(new Scene(
-					new HighScoreScreen(stage),
-					FrameConstants.WINDOW_WIDTH, 
-					FrameConstants.WINDOW_HEIGHT
-					));
-		});
+		highScore.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HIGHSCORE));
 
 		Label label = new Label();
 		label.setText("Tāitai");

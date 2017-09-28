@@ -162,24 +162,11 @@ public class TestPane extends StackPane implements Observer {
 			}
 		});
 
-
 		Button back = new Button();		
 		back.setText("Exit");
 		back.setPrefSize(75d, 30d);
 		back.setTranslateY(270d);
-
-
-		back.setOnAction(e -> {
-			// Back button will bring us back to the start menu 
-			_stage.setScene(new Scene(
-					new ListSelectPane(_stage), 
-					FrameConstants.WINDOW_WIDTH, 
-					FrameConstants.WINDOW_HEIGHT
-					));
-			_stage.sizeToScene();
-		});
-
-
+		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.LIST));
 
 		// Fix alignment of ButtonBox		
 		buttonBox.getChildren().add(_record);
@@ -191,14 +178,12 @@ public class TestPane extends StackPane implements Observer {
 		// Put this into a HBox, then put the HBox into the buttonBox		
 		this.getChildren().add(buttonBox);
 		this.getChildren().add(back);
-
 		this.getChildren().add(_correctness);
 		this.getChildren().add(_correctAnswers);
 		this.getChildren().add(_label);
 		this.getChildren().add(_qLabel);
 
 		reset();
-
 	}
 
 	/**
