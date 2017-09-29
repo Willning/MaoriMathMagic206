@@ -40,6 +40,7 @@ public class TestPane extends StackPane implements Observer {
 	private Button _commitAnswer;
 	private Button _play;
 	private Button _next;
+	private Button _tryAgain;
 
 	private int BUTTON_WIDTH = 160;
 	private int BUTTON_HEIGHT=30;
@@ -50,6 +51,7 @@ public class TestPane extends StackPane implements Observer {
 	private Integer numCorrect=0;
 
 	private boolean answered;
+	private boolean firstTry;
 
 
 	public TestPane(Stage stage, ListMode mode) {
@@ -71,9 +73,13 @@ public class TestPane extends StackPane implements Observer {
 
 		_stage = stage;
 		_mode = mode;
+
 		_commitAnswer = new Button();
 		_record = new Button();
 		_play=new Button();
+		_next = new Button();
+		_tryAgain=new Button();
+
 		_label = new Label();
 		_qLabel=new Label();
 		_correctness = new Label();
@@ -122,12 +128,13 @@ public class TestPane extends StackPane implements Observer {
 			}
 		});
 
-		_next = new Button();
+
 		_next.setText("Next Question");
 		_next.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);		
 		_next.setOnAction(e ->{
 			if (_questionNumber <= 10){
 				this.reset();
+				
 				_questionNumber++;
 				_qLabel.setText(String.format("Question #%s", _questionNumber));
 
@@ -138,9 +145,8 @@ public class TestPane extends StackPane implements Observer {
 				_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
 			}
 		});
-		
 
-		_play = new Button();
+
 		_play.setText("Play Recording");
 		_play.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		_play.setDisable(true);
@@ -151,6 +157,14 @@ public class TestPane extends StackPane implements Observer {
 				tester.play();
 			}
 
+		});
+
+		_tryAgain.setText("Try Again?");
+		_tryAgain.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+		_tryAgain.setVisible(false);
+
+		_tryAgain.setOnAction(e -> {
+			this.secondTryReset();
 		});
 
 		Button back = new Button();		
@@ -164,6 +178,7 @@ public class TestPane extends StackPane implements Observer {
 		buttonBox.getChildren().add(_commitAnswer);
 		buttonBox.getChildren().add(_play);
 		buttonBox.getChildren().add(_next);
+		buttonBox.getChildren().add(_tryAgain);
 
 
 		// Put this into a HBox, then put the HBox into the buttonBox		
@@ -184,7 +199,6 @@ public class TestPane extends StackPane implements Observer {
 	public void reset() {
 		// Random number generator class to generate numbers.
 		Random randomGenerator = new Random();
-
 		// Depending on the enum, the number attached to this screen will have a different range
 		if (_mode.equals(ListMode.EASY)) {
 			_number = randomGenerator.nextInt(8) + 1;
@@ -194,27 +208,31 @@ public class TestPane extends StackPane implements Observer {
 		}
 		// Number is in the centre.
 		answered=false;
+		firstTry=true;
 
 		_label.setText(_number.toString());
 		_label.setScaleX(5);
 		_label.setScaleY(5);
+		
 		_commitAnswer.setDisable(true);
 		_next.setDisable(true);
 		_play.setDisable(true);
 		_record.setDisable(false);
 		_correctness.setVisible(false);
 		_status.setVisible(false);
+		_tryAgain.setVisible(false);
 
 	}
-	
+
 	/**
 	 * This is the reset used when we want to try the same question again. This will reset the buttons but will keep the label.
 	 * Can only be done once per question.
 	 */
-	
+
 	public void secondTryReset(){
-		
+
 		answered=false;
+		firstTry=false;
 		//lock all the buttons into the right state.		
 		_commitAnswer.setDisable(true);
 		_next.setDisable(true);
@@ -222,7 +240,8 @@ public class TestPane extends StackPane implements Observer {
 		_record.setDisable(false);
 		_correctness.setVisible(false);
 		_status.setVisible(false);
-		
+		_tryAgain.setVisible(false);
+
 		//label, doesn't change
 	}
 
@@ -265,8 +284,12 @@ public class TestPane extends StackPane implements Observer {
 			_record.setDisable(true);
 			_commitAnswer.setDisable(true);
 			_next.setDisable(false);
-			
-			//add in a try again button which appears when this event occurs.
+
+			if (firstTry){	
+				//add in a try again button which appears when this event occurs.
+				_tryAgain.setVisible(true);
+
+			}
 
 		}
 		else if (recorded == "BeginPlay") {

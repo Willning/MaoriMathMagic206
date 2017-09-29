@@ -1,8 +1,5 @@
 package gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -16,11 +13,10 @@ import javafx.stage.Stage;
 
 public class ListSelectPane extends StackPane {
 	
-	private Stage _stage;
-	
+		
 	public ListSelectPane(Stage primaryStage) {
 		super();
-		_stage = primaryStage;
+		
 		
 		// Button for Easy List(1-100)
 		Button easy = new Button();
