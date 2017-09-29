@@ -47,7 +47,7 @@ public class TestPane extends StackPane implements Observer {
 	private int BUTTON_HEIGHT=30;
 
 	//_playing is a state variable, other actions are locked if _playing is true.
-	private boolean _playing;
+	
 	private int _questionNumber=1;
 	private Integer numCorrect=0;
 
@@ -146,20 +146,10 @@ public class TestPane extends StackPane implements Observer {
 
 		_play.setOnAction(e -> {
 			File playThis=new File("./temp/foo.wav");
-			if (playThis.exists()&&_playing==false) {
-				System.out.println("ok");
-				Media sound=new Media(playThis.toURI().toString());
-				MediaPlayer player=new MediaPlayer(sound);
-				player.play();
-				_playing=true;
-
-				player.setOnEndOfMedia(new Runnable(){
-					@Override
-					public void run(){
-						_playing=false;
-					}
-				});
+			if (playThis.exists()) {
+				tester.play();
 			}
+
 		});
 
 		Button back = new Button();		
@@ -250,7 +240,7 @@ public class TestPane extends StackPane implements Observer {
 			_commitAnswer.setDisable(true);
 			_next.setDisable(false);
 
-		}
+		}		
 	}
 
 }

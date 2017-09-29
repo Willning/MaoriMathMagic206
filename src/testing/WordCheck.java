@@ -56,13 +56,7 @@ public class WordCheck {
 
 		});
 
-		Thread thread = new Thread(wordCheck) {
-			@Override
-			public void run() {
-				wordCheck.run();
-			}
-
-		};
+		Thread thread = new Thread(wordCheck);
 		thread.start();
 	
 

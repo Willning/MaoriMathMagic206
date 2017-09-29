@@ -13,8 +13,10 @@ public class TestConductor extends Observable {
 
 	private IntegerMaoriConverter _convert;
 	WordCheck _check = new WordCheck(this);
+	PlayScript _player = new PlayScript(this);
 
 	private boolean _recording = false;
+	private boolean _playing = false;
 
 	public TestConductor() {
 		_convert = new IntegerMaoriConverter();
@@ -23,11 +25,17 @@ public class TestConductor extends Observable {
 	public void test(int input) throws InterruptedException, IOException {
 		
 		// Cannot process if _recording is true:
-		if (!_recording) {
+		if (!_recording&&!_playing) {
 			// Should return what was heard as a string.
 			String expected = _convert.convertNumber(input);		
 			_check.concurrentTest(expected);			
 
+		}
+	}
+	
+	public void play(){
+		if (!_recording&&!_playing) {
+			_player.play();
 		}
 	}
 	
@@ -39,6 +47,18 @@ public class TestConductor extends Observable {
 	public void incorrect() {
 		this.setChanged();
 		this.notifyObservers("Incorrect");
+	}
+	
+	public void beginPlay(){
+		_playing=true;
+		this.setChanged();
+		this.notifyObservers("BeginPlay");
+	}
+	
+	public void endPlay(){
+		_playing=false;
+		this.setChanged();
+		this.notifyObservers("EndPlay");
 	}
 
 	public void record() {
@@ -67,7 +87,7 @@ public class TestConductor extends Observable {
 			this.notifyObservers("endRecord");
 		});
 
-		if (!_recording) {
+		if (!_recording&&!_playing) {
 			setChanged();
 			notifyObservers("beginRecord");
 			
