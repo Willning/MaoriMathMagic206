@@ -20,6 +20,9 @@ import testing.TestConductor;
  * This pane is to be generated every time a new question needs to be asked, generates a number and contains 
  * buttons to do relevant actions.
  */
+
+//@@TODO add a try again mode
+
 public class TestPane extends StackPane implements Observer {
 
 	private Stage _stage;
@@ -135,8 +138,7 @@ public class TestPane extends StackPane implements Observer {
 				_stage.setScene(new Scene(new ScoreScreen(_stage, _mode, numCorrect),FrameConstants.WINDOW_WIDTH,FrameConstants.WINDOW_HEIGHT));
 			}
 		});
-
-		_next.setDisable(true);
+		
 
 		_play = new Button();
 		_play.setText("Play Recording");
@@ -201,7 +203,27 @@ public class TestPane extends StackPane implements Observer {
 		_play.setDisable(true);
 		_record.setDisable(false);
 		_correctness.setVisible(false);
+		_status.setVisible(false);
 
+	}
+	
+	/**
+	 * This is the reset used when we want to try the same question again. This will reset the buttons but will keep the label.
+	 * Can only be done once per question.
+	 */
+	
+	public void secondTryReset(){
+		
+		answered=false;
+		//lock all the buttons into the right state.		
+		_commitAnswer.setDisable(true);
+		_next.setDisable(true);
+		_play.setDisable(true);
+		_record.setDisable(false);
+		_correctness.setVisible(false);
+		_status.setVisible(false);
+		
+		//label, doesn't change
 	}
 
 
@@ -243,7 +265,8 @@ public class TestPane extends StackPane implements Observer {
 			_record.setDisable(true);
 			_commitAnswer.setDisable(true);
 			_next.setDisable(false);
-
+			
+			//add in a try again button which appears when this event occurs.
 
 		}
 		else if (recorded == "BeginPlay") {

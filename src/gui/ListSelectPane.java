@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 /**
  * This pane is responsible for selecting which list will be done, 1-9 or 1-99. 
  */
+
+//@@TODO add descriptors for what each list entails
+
 public class ListSelectPane extends StackPane {
 	
 	private Stage _stage;

@@ -18,7 +18,7 @@ import testing.LocalScore;
  * contains 2 ListViews
  */
 
-//@@TODO oscar please fix this.
+//@@TODO Have a leaderboard or just have stats
 public class HighScoreScreen extends StackPane {
 	
 
