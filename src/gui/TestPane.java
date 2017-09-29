@@ -12,19 +12,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import testing.TestConductor;
 
-//@@TODO: add a correct/incorrect indicator
-//@@TODO: add a stage after answering to show correct/incorrect;
-
-//@@TODO reorganize buttons so that things look nicer, 3 main buttons, back in the corner. Skip becomes next and only visible when answer is committed
 
 /**
  * This pane is to be generated every time a new question needs to be asked, generates a number and contains 
- * buttons to do relevant actions 
+ * buttons to do relevant actions.
  */
 public class TestPane extends StackPane implements Observer {
 
@@ -36,6 +30,7 @@ public class TestPane extends StackPane implements Observer {
 	private Label _qLabel;
 
 	private Label _correctness;
+	private Label _status;
 	private Label _correctAnswers;
 
 	private Button _record;
@@ -47,14 +42,16 @@ public class TestPane extends StackPane implements Observer {
 	private int BUTTON_HEIGHT=30;
 
 	//_playing is a state variable, other actions are locked if _playing is true.
-	
+
 	private int _questionNumber=1;
 	private Integer numCorrect=0;
+
+	private boolean answered;
 
 
 	public TestPane(Stage stage, ListMode mode) {
 		super();
-		
+
 		TestConductor tester = new TestConductor();
 
 		VBox buttonBox = new VBox();
@@ -78,8 +75,9 @@ public class TestPane extends StackPane implements Observer {
 		_qLabel=new Label();
 		_correctness = new Label();
 		_correctAnswers = new Label();
-		
-		
+		_status=new Label();
+
+
 		_correctAnswers.setText("Correct Answers: 0");
 		_correctAnswers.setScaleX(2);
 		_correctAnswers.setScaleY(2);
@@ -92,7 +90,8 @@ public class TestPane extends StackPane implements Observer {
 		_qLabel.setScaleY(1.5);
 
 
-		_correctness.setTranslateY(-40d);
+		_correctness.setTranslateY(-60d);
+		_status.setTranslateY(-80d);
 
 
 
@@ -128,7 +127,7 @@ public class TestPane extends StackPane implements Observer {
 				this.reset();
 				_questionNumber++;
 				_qLabel.setText(String.format("Question #%s", _questionNumber));
-				
+
 				if(_questionNumber == 10) {
 					_next.setText("Finish quiz");
 				}
@@ -169,6 +168,7 @@ public class TestPane extends StackPane implements Observer {
 		this.getChildren().add(buttonBox);
 		this.getChildren().add(back);
 		this.getChildren().add(_correctness);
+		this.getChildren().add(_status);
 		this.getChildren().add(_correctAnswers);
 		this.getChildren().add(_label);
 		this.getChildren().add(_qLabel);
@@ -191,6 +191,7 @@ public class TestPane extends StackPane implements Observer {
 			_number = randomGenerator.nextInt(98) + 1;
 		}
 		// Number is in the centre.
+		answered=false;
 
 		_label.setText(_number.toString());
 		_label.setScaleX(5);
@@ -210,29 +211,32 @@ public class TestPane extends StackPane implements Observer {
 			_record.setDisable(false);
 			_commitAnswer.setDisable(false);
 			_play.setDisable(false);
-			_correctness.setVisible(false);
+			_status.setVisible(false);
 		}
 		else if(recorded == "beginRecord") {
 			_record.setDisable(true);
 			_commitAnswer.setDisable(true);
 			_play.setDisable(true);
-			_correctness.setText("Recording...");
-			_correctness.setVisible(true);
+			_status.setText("Recording...");
+			_status.setVisible(true);
 		}
 		else if (recorded == "Correct"){
-			
+			answered=true;
+
 			numCorrect++;
 			String output=String.format("Correct Answers: %d", numCorrect);			
 			_correctAnswers.setText(output);
-			
+
 			_correctness.setText("Correct");
 			_correctness.setVisible(true);
 			_record.setDisable(true);
 			_commitAnswer.setDisable(true);
 			_next.setDisable(false);
 
+
 		}
 		else if (recorded == "Incorrect"){
+			answered=true;
 
 			_correctness.setText("Incorrect");
 			_correctness.setVisible(true);
@@ -240,7 +244,32 @@ public class TestPane extends StackPane implements Observer {
 			_commitAnswer.setDisable(true);
 			_next.setDisable(false);
 
-		}		
+
+		}
+		else if (recorded == "BeginPlay") {
+			_status.setText("Playing...");
+			_status.setVisible(true);
+			_record.setDisable(true);
+			_commitAnswer.setDisable(true);
+			_play.setDisable(true);
+
+			if (!_next.isDisabled()){
+				_next.setDisable(true);
+			}
+		}
+		else if (recorded == "EndPlay"){
+			_status.setVisible(false);			
+			_play.setDisable(false);
+
+			if (answered){
+				//unlock the next button only if the questions has been answered
+				_next.setDisable(false);
+			}else {
+				//unlock recorind gand checking if unanswered
+				_record.setDisable(false);
+				_commitAnswer.setDisable(false);
+			}
+		}
 	}
 
 }
