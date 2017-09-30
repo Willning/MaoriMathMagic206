@@ -19,7 +19,6 @@ public class ListSelectPane extends StackPane {
 		easy.setText("Easy List");
 		easy.setPrefSize(100d, 75d);
 		easy.setTranslateY(80d);
-		
 		easy.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.EASY_TEST));
 		
 		// Button for hard List (1-100)
@@ -27,7 +26,6 @@ public class ListSelectPane extends StackPane {
 		hard.setText("Hard List");
 		hard.setPrefSize(100d, 75d);
 		hard.setTranslateY(160d);
-		
 		hard.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HARD_TEST));
 		
 		Label label = new Label();
@@ -36,12 +34,11 @@ public class ListSelectPane extends StackPane {
 		label.setScaleX(3);
 		label.setScaleY(3);
 		
+		// Back button will bring us back to the start menu 
 		Button back = new Button();
 		back.setText("Back");
 		back.setPrefSize(75d, 30d);
 		back.setTranslateY(270d);
-		
-		// Back button will bring us back to the start menu 
 		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
 		
 		this.getChildren().add(label);

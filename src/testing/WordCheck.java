@@ -16,7 +16,10 @@ public class WordCheck {
 		_parent = tester;
 	}
 
-	public void concurrentTest(String expected) throws InterruptedException {
+	/**
+	 * Use HTK to test whether the word is correct.
+	 */
+	public void testConcurrently(String expected) throws InterruptedException {
 
 		Task<String> wordCheck = new Task<String>() {
 			@Override

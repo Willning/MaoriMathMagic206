@@ -8,7 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import testing.LocalScore;
+import testing.HighScoreManager;
 
 //@@TODO Have a leaderboard or just have stats
 /*
@@ -21,7 +21,7 @@ public class HighScoreScreen extends StackPane {
 	private ListView<Integer> hardList;
 
 	public HighScoreScreen(Stage stage) {
-		LocalScore scoreManager = LocalScore.getInstance();
+		HighScoreManager scoreManager = HighScoreManager.getInstance();
 		Label highScoreTitle = new Label();
 		highScoreTitle.setText("High Scores");
 		highScoreTitle.setScaleX(5);

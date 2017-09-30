@@ -25,7 +25,7 @@ public class TestConductor extends Observable {
 		if (!_recording && !_playing) {
 			// Should return what was heard as a string.
 			String expected = MaoriNumberConverter.convertNumber(input);		
-			_check.concurrentTest(expected);
+			_check.testConcurrently(expected);
 		}
 	}
 	
@@ -45,41 +45,51 @@ public class TestConductor extends Observable {
 		this.notifyObservers("Incorrect");
 	}
 	
+	/**
+	 * Change the state to begin playing a recording. 
+	 */
 	public void beginPlay() {
 		_playing = true;
 		this.setChanged();
 		this.notifyObservers("BeginPlay");
 	}
 	
+	/**
+	 * Change the state to finish playing a recording. 
+	 */
 	public void endPlay() {
 		_playing = false;
 		this.setChanged();
 		this.notifyObservers("EndPlay");
 	}
 
+	/**
+	 * This method is responsible for creating a thread that does the recording,
+	 * and sending an event when recording ends.
+	 */
 	public void record() {
-
-		Task<String> task = new Task<String>() {
-			/**
-			 * This method is responsible for creating a thread that does the recording,
-			 * and sending an event when recording ends.
-			 */
-			protected String call() throws IOException, InterruptedException {
+		
+		Task<Void> task = new Task<Void>() {
+			protected Void call() throws IOException, InterruptedException {
 				_recording = true;
+				
 				String[] command = {"/bin/bash", "./record.sh"};
+				
 				ProcessBuilder builder = new ProcessBuilder(command);
 				builder.redirectErrorStream(true);
+				
 				Process process = builder.start();				
 				process.waitFor();
+				
 				_recording = false;
-
+				
 				return null;
 			}
 		};
 		
 		task.setOnSucceeded(e-> {
-			this.setChanged();
-			this.notifyObservers("endRecord");
+			setChanged();
+			notifyObservers("endRecord");
 		});
 
 		if (!_recording && !_playing) {

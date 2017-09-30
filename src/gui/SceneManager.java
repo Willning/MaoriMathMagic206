@@ -19,6 +19,7 @@ public class SceneManager {
     }
     
     private static SceneManager instance = null;
+    
     private Stage _stage;
 
     public SceneManager(Stage stage) {

@@ -54,8 +54,6 @@ public class TestPane extends StackPane implements Observer {
 		TestConductor tester = new TestConductor();
 
 		VBox buttonBox = new VBox();
-		//Use this to properly pad all the buttons
-
 		buttonBox.setSpacing(10);
 		buttonBox.setTranslateY(340d);
 		buttonBox.setTranslateX(FrameConstants.WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2);
@@ -102,7 +100,7 @@ public class TestPane extends StackPane implements Observer {
 		_commitAnswer.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		_commitAnswer.setDisable(true);
 		_commitAnswer.setOnAction(a -> {
-			// Call to a tester class which will fire back a correct/incorrect event.
+			// Call into the tester class which will fire back a correct/incorrect event.
 			try {
 				tester.test(_number);
 			} 
