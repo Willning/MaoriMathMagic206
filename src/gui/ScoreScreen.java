@@ -22,7 +22,7 @@ public class ScoreScreen extends StackPane{
 		_score = new Label();
 		_status = new Label();
 		
-		LocalScore scoreInstance=LocalScore.getInstance();
+		LocalScore scoreInstance = LocalScore.getInstance();
 		scoreInstance.addScore(mode, score);
 		
 		String difficulty = "none";

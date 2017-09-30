@@ -18,7 +18,7 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage stage) {
-		stage.setTitle("Tāitai");
+		stage.setTitle("Tātai");
 
 		SceneManager.create(stage);
 		SceneManager.get().changeScene(SceneManager.SceneType.START);

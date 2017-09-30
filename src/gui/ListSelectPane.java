@@ -5,18 +5,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+//@@TODO add descriptors for what each list entails
 /**
  * This pane is responsible for selecting which list will be done, 1-9 or 1-99. 
  */
-
-//@@TODO add descriptors for what each list entails
-
 public class ListSelectPane extends StackPane {
-	
 		
 	public ListSelectPane(Stage primaryStage) {
 		super();
-		
 		
 		// Button for Easy List(1-100)
 		Button easy = new Button();
@@ -51,7 +47,6 @@ public class ListSelectPane extends StackPane {
 		this.getChildren().add(label);
 		this.getChildren().add(easy); 
 		this.getChildren().add(hard);
-		this.getChildren().add(back);
-		
+		this.getChildren().add(back);	
 	}
 }

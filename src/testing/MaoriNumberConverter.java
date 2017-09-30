@@ -3,12 +3,12 @@ package testing;
 /**
  * This class is responsible for converting a number to words.
  */
-public class IntegerMaoriConverter {
+public class MaoriNumberConverter {
 
 	/**
 	 * Convert a digit to a Te Reo word.
 	 */
-	private String convertDigit(int digit) {
+	private static String convertDigit(int digit) {
 		String output = null;
 		switch (digit) {
 			case 1:
@@ -57,7 +57,7 @@ public class IntegerMaoriConverter {
 	/**
 	 * Convert a full number to a Te Reo word.
 	 */
-	public String convertNumber(int input) {
+	public static String convertNumber(int input) {
 		if (input <= 10) {
 			return convertDigit(input);
 		}

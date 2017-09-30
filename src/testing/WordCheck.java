@@ -13,7 +13,7 @@ public class WordCheck {
 	private TestConductor _parent;
 	
 	public WordCheck(TestConductor tester) {
-		_parent=tester;
+		_parent = tester;
 	}
 
 	public void concurrentTest(String expected) throws InterruptedException {
@@ -44,22 +44,18 @@ public class WordCheck {
 			}
 		};
 		
-		//On succeed, will write correct as the word that was heard.
+		// On succeed, will write correct as the word that was heard.
 		wordCheck.setOnSucceeded(e -> {			
-			if (_heardWord != null&&_heardWord.equals(expected)) {			
-								
+			if (_heardWord != null && _heardWord.equals(expected)) {				
 				_parent.correct();												
 			}
 			else {						
 				_parent.incorrect();				
-			}		
-
+			}
 		});
 
 		Thread thread = new Thread(wordCheck);
 		thread.start();
-	
-
 	}	
 
 }

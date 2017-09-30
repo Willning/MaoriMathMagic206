@@ -31,7 +31,7 @@ public class StartPane extends StackPane {
 		highScore.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HIGHSCORE));
 
 		Label label = new Label();
-		label.setText("Tāitai");
+		label.setText("Tātai");
 		label.setScaleX(5);
 		label.setScaleY(5);
 

@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
@@ -59,15 +60,18 @@ public class SceneManager {
 
             case SCORE:
 
-
             default:
                 root = new StartPane(_stage);
         }
 
-        _stage.setScene(new Scene(
+        Scene scene = new Scene(
             root,
             FrameConstants.WINDOW_WIDTH, 
             FrameConstants.WINDOW_HEIGHT
-        ));
+        );
+
+        scene.getStylesheets().add(new File("src/styles.css").toURI().toString());
+
+        _stage.setScene(scene);
     }
 }
