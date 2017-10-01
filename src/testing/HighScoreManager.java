@@ -30,7 +30,7 @@ public class HighScoreManager {
 	 */
 	public static HighScoreManager getInstance() {
 		if (instance == null) {
-			return new HighScoreManager();
+			instance = new HighScoreManager();
 		}
 		return instance;
 	}
@@ -54,7 +54,7 @@ public class HighScoreManager {
 	/**
 	 * Get the relevant highscore list.
 	 */
-	public List<Integer> returnList(ListMode mode) {
+	public List<Integer> getScores(ListMode mode) {
 		if (mode.equals(ListMode.EASY)) {
 			return _easyScores;
 		}

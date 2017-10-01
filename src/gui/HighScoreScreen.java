@@ -43,7 +43,7 @@ public class HighScoreScreen extends StackPane {
 		scoreManager.addScore(ListMode.EASY, 0);
 
 		int numScores = 0;
-		for (int score : scoreManager.returnList(ListMode.EASY)) {
+		for (int score : scoreManager.getScores(ListMode.EASY)) {
 			if (numScores >= 5) {
 				break;
 			}
@@ -73,7 +73,7 @@ public class HighScoreScreen extends StackPane {
 		scoreManager.addScore(ListMode.HARD, 0);
 
 		numScores = 0;
-		for (int score : scoreManager.returnList(ListMode.HARD)) {
+		for (int score : scoreManager.getScores(ListMode.HARD)) {
 			if (numScores >= 5) {
 				break;
 			}

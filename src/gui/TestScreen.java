@@ -152,7 +152,7 @@ public class TestScreen extends StackPane implements Observer {
 		_nextQuestionButton.getStyleClass().add("blue");
 		_nextQuestionButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_nextQuestionButton.setOnAction(e -> {
-			if (_questionNumber < 2) {
+			if (_questionNumber < 10) {
 				this.reset();
 				
 				_questionNumber++;
