@@ -5,12 +5,12 @@ import javafx.concurrent.Task;
 /**
  * Background task used to play a recording.
  */
-public class PlayScript {
+public class PlayRecordingScript {
 	
 	private TestConductor _parent;
 	
-	public PlayScript(TestConductor tester) {
-		_parent=tester;
+	public PlayRecordingScript(TestConductor tester) {
+		_parent = tester;
 	}
 	
 	/**

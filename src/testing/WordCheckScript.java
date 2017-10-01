@@ -7,12 +7,12 @@ import javafx.concurrent.Task;
 /**
  * Background task, used to check what word a recording is.
  */
-public class WordCheck {
+public class WordCheckScript {
 
 	private String _heardWord = null;	
 	private TestConductor _parent;
 	
-	public WordCheck(TestConductor tester) {
+	public WordCheckScript(TestConductor tester) {
 		_parent = tester;
 	}
 

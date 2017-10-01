@@ -42,7 +42,7 @@ public class ScoreScreen extends StackPane{
 		back.setText("Back To Start");
 		back.setPrefSize(160d, 35d);
 		back.setTranslateY(150d);
-		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
+		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
 		
 		if (score > 8 && mode == ListMode.EASY) {
 			_status.setText("Congradulations, you are now able to move onto the Hard List ");
@@ -57,7 +57,7 @@ public class ScoreScreen extends StackPane{
 			advance.setPrefSize(160d, 35d);
 			advance.setTranslateY(100d);
 			
-			advance.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HARD_TEST));
+			advance.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.HARD_TEST));
 				
 			this.getChildren().add(advance);
 		}

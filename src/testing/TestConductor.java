@@ -5,13 +5,13 @@ import java.util.Observable;
 import javafx.concurrent.Task;
 
 /**
- * This class is responsible for doing the testing, recording and firing 'correct'/'incorrect',
- * and calling HTK.
+ * This class is responsible for doing the testing, recording and 
+ * firing 'correct'/'incorrect'.
  */
 public class TestConductor extends Observable {
 
-	WordCheck _check = new WordCheck(this);
-	PlayScript _player = new PlayScript(this);
+	WordCheckScript _check = new WordCheckScript(this);
+	PlayRecordingScript _player = new PlayRecordingScript(this);
 
 	private boolean _recording = false;
 	private boolean _playing = false;

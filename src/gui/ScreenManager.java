@@ -8,51 +8,51 @@ import javafx.scene.Parent;
 /**
  * This class allows us to change and manage scenes.
  */
-public class SceneManager {
-    public enum SceneType {
-        START,
+public class ScreenManager {
+    public enum ScreenType {
+        MAIN_MENU,
+        LIST_SELECT,
         HARD_TEST,
         EASY_TEST,
         SCORE,
         HIGHSCORE,
-        LIST
     }
     
-    private static SceneManager instance = null;
+    private static ScreenManager instance = null;
     
     private Stage _stage;
 
-    public SceneManager(Stage stage) {
+    public ScreenManager(Stage stage) {
         _stage = stage;
 
     }
 
     public static void create(Stage stage) {
-        instance = new SceneManager(stage);
+        instance = new ScreenManager(stage);
     }
 
-    public static SceneManager get() {
+    public static ScreenManager get() {
         return instance;
     }
 
-    public void changeScene(SceneType sceneType) {
+    public void changeScreen(ScreenType screenType) {
         Parent root;
         
-        switch (sceneType) {
-            case START:
-				root = new StartPane();
+        switch (screenType) {
+            case MAIN_MENU:
+				root = new MainMenuScreen();
                 break;
 
-            case LIST:
-				root = new ListSelectPane(); 
+            case LIST_SELECT:
+				root = new ListSelectScreen(); 
                 break;
 
             case HARD_TEST:
-				root = new TestPane(ListMode.HARD);
+				root = new TestScreen(ListMode.HARD);
                 break;
 
             case EASY_TEST:
-				root = new TestPane(ListMode.EASY);
+				root = new TestScreen(ListMode.EASY);
                 break;
 
             case HIGHSCORE:
@@ -62,7 +62,7 @@ public class SceneManager {
             case SCORE:
 
             default:
-                root = new StartPane();
+                root = new MainMenuScreen();
         }
 
         Scene scene = new Scene(root);
@@ -71,7 +71,7 @@ public class SceneManager {
         _stage.setScene(scene);
     }
 
-    public void changeScene(Parent root) {
+    public void changeScreen(Parent root) {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(new File("src/styles.css").toURI().toString());
 

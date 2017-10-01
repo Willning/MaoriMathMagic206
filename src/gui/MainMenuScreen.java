@@ -16,9 +16,9 @@ import javafx.scene.layout.VBox;
  */
 //@@TODO add an instruction screen button
 
-public class StartPane extends StackPane {
+public class MainMenuScreen extends StackPane {
 
-	public StartPane() {
+	public MainMenuScreen() {
 		super();
 
 		// Main layout
@@ -40,13 +40,13 @@ public class StartPane extends StackPane {
 		startButton.getStyleClass().add("large-button");
 		startButton.setText("Start");
 		startButton.setMaxWidth(Double.MAX_VALUE);
-		startButton.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.LIST));
+		startButton.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.LIST_SELECT));
 
 		Button highScoreButton = new Button(); 
 		highScoreButton.getStyleClass().add("large-button");
 		highScoreButton.setText("High Scores");
 		highScoreButton.setMaxWidth(Double.MAX_VALUE);
-		highScoreButton.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HIGHSCORE));
+		highScoreButton.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.HIGHSCORE));
 
 		subLayout.getChildren().addAll(startButton, highScoreButton);
 		layout.getChildren().addAll(title, subLayout);

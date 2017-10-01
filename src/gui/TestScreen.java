@@ -22,7 +22,7 @@ import testing.TestConductor;
  * This pane is to be generated every time a new question needs to be asked, 
  * generates a number and contains buttons to do relevant actions.
  */
-public class TestPane extends StackPane implements Observer {
+public class TestScreen extends StackPane implements Observer {
 
 	// Labels
 	private Label _numberLabel;
@@ -48,7 +48,7 @@ public class TestPane extends StackPane implements Observer {
 	private boolean answered;
 	private boolean firstTry;
 
-	public TestPane(ListMode mode) {
+	public TestScreen(ListMode mode) {
 		super();
 
 		_mode = mode;
@@ -129,7 +129,7 @@ public class TestPane extends StackPane implements Observer {
 		_nextQuestionButton = new Button("Next Question");
 		_nextQuestionButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_nextQuestionButton.setOnAction(e -> {
-			if (_questionNumber <= 10) {
+			if (_questionNumber < 10) {
 				this.reset();
 				
 				_questionNumber++;
@@ -140,7 +140,7 @@ public class TestPane extends StackPane implements Observer {
 				}
 			}
 			else {
-				SceneManager.get().changeScene(new ScoreScreen(_mode, numCorrect));
+				ScreenManager.get().changeScreen(new ScoreScreen(_mode, numCorrect));
 			}
 		});
 
@@ -154,7 +154,7 @@ public class TestPane extends StackPane implements Observer {
 		// Returns to the main menu.
 		Button back = new Button();		
 		back.setText("Back");
-		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
+		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
 
 		topButtonBox.getChildren().addAll(
 			_recordButton, 

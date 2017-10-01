@@ -59,7 +59,7 @@ public class HighScoreScreen extends StackPane {
 		Button back = new Button();
 		back.setText("Back");
 		back.setPrefSize(200d, 100d);
-		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
+		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
 		
 		this.getChildren().add(back);
 		this.getChildren().add(easyBox);

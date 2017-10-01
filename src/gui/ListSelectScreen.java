@@ -13,9 +13,9 @@ import javafx.scene.layout.VBox;
 /**
  * This pane is responsible for selecting which list will be done, 1-9 or 1-99. 
  */
-public class ListSelectPane extends StackPane {
+public class ListSelectScreen extends StackPane {
 		
-	public ListSelectPane() {
+	public ListSelectScreen() {
 		super();
 		
 		// Main layout
@@ -33,22 +33,22 @@ public class ListSelectPane extends StackPane {
 		Button easy = new Button();
 		easy.getStyleClass().add("large-button");
 		easy.setText("Easy List");
-		easy.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.EASY_TEST));
+		easy.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.EASY_TEST));
 		
 		// Button for hard List (1-100)
 		Button hard = new Button();
 		hard.getStyleClass().add("large-button");
 		hard.setText("Hard List");
-		hard.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HARD_TEST));
+		hard.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.HARD_TEST));
 		
 		Label title = new Label();
 		title.getStyleClass().add("subheading");
 		title.setText("Select Difficulty List");
 		
-		// Back button will bring us back to the start menu 
+		// Back button will bring us back to the main menu 
 		Button back = new Button();
 		back.setText("Back");
-		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
+		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
 		
 		subLayout.getChildren().addAll(easy, hard);
 		layout.getChildren().addAll(title, subLayout, back);

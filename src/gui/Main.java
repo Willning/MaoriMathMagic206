@@ -22,8 +22,8 @@ public class Main extends Application{
 		stage.setWidth(800);
 		stage.setHeight(600);
 
-		SceneManager.create(stage);
-		SceneManager.get().changeScene(SceneManager.SceneType.START);
+		ScreenManager.create(stage);
+		ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU);
 
 		stage.setOnCloseRequest(e -> {
 			Platform.exit();
