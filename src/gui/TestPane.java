@@ -5,13 +5,15 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+import javafx.geometry.Pos;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import testing.TestConductor;
 
 //@@TODO add a try again mode
@@ -22,85 +24,96 @@ import testing.TestConductor;
  */
 public class TestPane extends StackPane implements Observer {
 
-	private Stage _stage;
+	// Labels
+	private Label _numberLabel;
+	private Label _questionNumberLabel;
+	private Label _correctnessLabel;
+	private Label _statusLabel;
+	private Label _correctAnswersLabel;
+
+	// Media control buttons
+	private Button _recordButton;
+	private Button _playButton;
+
+	// Question control buttons
+	private Button _checkAnswerButton;
+	private Button _nextQuestionButton;
+	private Button _tryAgainButton;
+
+	// State variables
 	private ListMode _mode;
 	private Integer _number;
-	private Label _label;
-
-	private Label _qLabel;
-
-	private Label _correctness;
-	private Label _status;
-	private Label _correctAnswers;
-
-	private Button _record;
-	private Button _commitAnswer;
-	private Button _play;
-	private Button _next;
-	private Button _tryAgain;
-
-	private int BUTTON_WIDTH = 160;
-	private int BUTTON_HEIGHT=30;
-
-	private int _questionNumber=1;
-	private Integer numCorrect=0;
-
+	private int _questionNumber = 1;
+	private Integer numCorrect = 0;
 	private boolean answered;
 	private boolean firstTry;
 
-	public TestPane(Stage stage, ListMode mode) {
+	public TestPane(ListMode mode) {
 		super();
 
-		TestConductor tester = new TestConductor();
-
-		VBox buttonBox = new VBox();
-		buttonBox.setSpacing(10);
-		buttonBox.setTranslateY(340d);
-		buttonBox.setTranslateX(FrameConstants.WINDOW_WIDTH / 2 - BUTTON_WIDTH / 2);
-
-		HBox smallerBox = new HBox();	    
-		smallerBox.setSpacing(10);
-
-		tester.addObserver(this);
-
-		_stage = stage;
 		_mode = mode;
 
-		_commitAnswer = new Button();
-		_record = new Button();
-		_play = new Button();
-		_next = new Button();
-		_tryAgain = new Button();
+		// Create the test conductor, which will actually carry out the functions to check
+		// whether the word that the user has said is correct. 
+		TestConductor tester = new TestConductor();
+		tester.addObserver(this);
 
-		_label = new Label();
-		_qLabel = new Label();
-		_correctness = new Label();
-		_correctAnswers = new Label();
-		_status = new Label();
+		// Main layout
+		VBox layout = new VBox();
+		layout.getStyleClass().add("vbox");
+		layout.setAlignment(Pos.CENTER);
 
-		_correctAnswers.setText("Correct Answers: 0");
-		_correctAnswers.setScaleX(2);
-		_correctAnswers.setScaleY(2);
-		_correctAnswers.setTranslateY(-250d);
+		// First row of buttons
+		TilePane topButtonBox = new TilePane();
+		topButtonBox.getStyleClass().add("button-pane");
+		topButtonBox.getStyleClass().add("spaced");
+		topButtonBox.setAlignment(Pos.CENTER);
 
-		_qLabel.setText(String.format("Question #%s", _questionNumber));
-		_qLabel.setTranslateY(-140);
-		_qLabel.setScaleX(1.5);
-		_qLabel.setScaleY(1.5);
+		// Second row of buttons
+		TilePane bottomButtonBox = new TilePane();
+		bottomButtonBox.getStyleClass().add("button-pane");
+		bottomButtonBox.setAlignment(Pos.CENTER);
 
-		_correctness.setTranslateY(-60d);
-		_status.setTranslateY(-80d);
+		// The number label is the main label displaying the current number.
+		_numberLabel = new Label();
+		_numberLabel.getStyleClass().add("heading");
 
-		_record.setText("Record");
-		_record.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		// Disable for duraion of recording
-		_record.setOnAction(e -> tester.record());
+		// The question number label displays how many questions have been completed.
+		_questionNumberLabel = new Label();
+		_questionNumberLabel.setText(String.format("Question #%s", _questionNumber));
+		
+		// The correctness label displays whether the answer given was correct or not.
+		_correctnessLabel = new Label();
 
-		_commitAnswer.setText("Check Answer");
-		_commitAnswer.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		_commitAnswer.setDisable(true);
-		_commitAnswer.setOnAction(a -> {
-			// Call into the tester class which will fire back a correct/incorrect event.
+		// Tracks the number of correct answers.
+		_correctAnswersLabel = new Label();
+		_correctAnswersLabel.setText("Correct Answers: 0");
+		
+		// The status label tracks the state of the state machine in this class.
+		_statusLabel = new Label();
+
+		// Initiate the recording. This button is disabled for the duration of recording.
+		_recordButton = new Button("REC ⏺");
+		_recordButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		_recordButton.setOnAction(e -> tester.record());
+
+		// Plays the recording
+		_playButton = new Button("PLAY ▶️");
+		_playButton.setDisable(true);
+		_playButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		_playButton.setOnAction(e -> {
+			File playThis = new File("./temp/foo.wav");
+			if (playThis.exists()) {
+				tester.play();
+			}
+		});
+
+		// Pressing the 'check answer' button calls into the tester class which will fire back 
+		// a 'correct' or 'incorrect' event.
+		_checkAnswerButton = new Button("Check Answer");
+		_checkAnswerButton.setDisable(true);
+		_checkAnswerButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		_checkAnswerButton.setOnAction(a -> {
 			try {
 				tester.test(_number);
 			} 
@@ -112,66 +125,60 @@ public class TestPane extends StackPane implements Observer {
 			}
 		});
 
-		_next.setText("Next Question");
-		_next.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);		
-		_next.setOnAction(e -> {
+		// Button to go to the next question. If 
+		_nextQuestionButton = new Button("Next Question");
+		_nextQuestionButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		_nextQuestionButton.setOnAction(e -> {
 			if (_questionNumber <= 10) {
 				this.reset();
 				
 				_questionNumber++;
-				_qLabel.setText(String.format("Question #%s", _questionNumber));
+				_questionNumberLabel.setText(String.format("Question #%s", _questionNumber));
 
 				if (_questionNumber == 10) {
-					_next.setText("Finish quiz");
+					_nextQuestionButton.setText("Finish Quiz");
 				}
 			}
 			else {
-				//@@TODO: use scenemanager				
-				_stage.setScene(new Scene(
-					new ScoreScreen(_stage, _mode, numCorrect),
-					FrameConstants.WINDOW_WIDTH,
-					FrameConstants.WINDOW_HEIGHT
-				));
+				SceneManager.get().changeScene(new ScoreScreen(_mode, numCorrect));
 			}
 		});
 
-		_play.setText("Play Recording");
-		_play.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		_play.setDisable(true);
+		// Allows the user to try a question again
+		_tryAgainButton = new Button();
+		_tryAgainButton.setText("Retry");
+		_tryAgainButton.setDisable(true);
+		_tryAgainButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		_tryAgainButton.setOnAction(e -> this.secondTryReset());
 
-		_play.setOnAction(e -> {
-			File playThis = new File("./temp/foo.wav");
-			if (playThis.exists()) {
-				tester.play();
-			}
-		});
-
-		_tryAgain.setText("Try Again?");
-		_tryAgain.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		_tryAgain.setVisible(false);
-		_tryAgain.setOnAction(e -> this.secondTryReset());
-
+		// Returns to the main menu.
 		Button back = new Button();		
-		back.setText("Exit");
-		back.setPrefSize(75d, 30d);
-		back.setTranslateY(270d);
-		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.LIST));
+		back.setText("Back");
+		back.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.START));
 
-		// Fix alignment of ButtonBox		
-		buttonBox.getChildren().add(_record);
-		buttonBox.getChildren().add(_commitAnswer);
-		buttonBox.getChildren().add(_play);
-		buttonBox.getChildren().add(_next);
-		buttonBox.getChildren().add(_tryAgain);
+		topButtonBox.getChildren().addAll(
+			_recordButton, 
+			_playButton
+		);
 
-		// Put this into a HBox, then put the HBox into the buttonBox		
-		this.getChildren().add(buttonBox);
-		this.getChildren().add(back);
-		this.getChildren().add(_correctness);
-		this.getChildren().add(_status);
-		this.getChildren().add(_correctAnswers);
-		this.getChildren().add(_label);
-		this.getChildren().add(_qLabel);
+		bottomButtonBox.getChildren().addAll(
+			_checkAnswerButton, 
+			_nextQuestionButton, 
+			_tryAgainButton
+		);
+
+		layout.getChildren().addAll(
+			_correctAnswersLabel,
+			_questionNumberLabel,
+			_correctnessLabel,
+			_statusLabel,
+			_numberLabel, 
+			topButtonBox, 
+			bottomButtonBox, 
+			back
+		);
+		
+		this.getChildren().add(layout);
 
 		reset();
 	}
@@ -180,7 +187,6 @@ public class TestPane extends StackPane implements Observer {
 	 * Reset to a new starting position.
 	 */
 	public void reset() {
-		// Random number generator class to generate numbers.
 		Random randomGenerator = new Random();
 		
 		// Depending on the state of 'mode', the number attached to this screen
@@ -191,109 +197,104 @@ public class TestPane extends StackPane implements Observer {
 		else if (_mode.equals(ListMode.HARD)) {
 			_number = randomGenerator.nextInt(98) + 1;
 		}
-		// Number is in the centre.
+
 		answered = false;
 		firstTry = true;
-
-		_label.setText(_number.toString());
-		_label.setScaleX(5);
-		_label.setScaleY(5);
 		
-		_commitAnswer.setDisable(true);
-		_next.setDisable(true);
-		_play.setDisable(true);
-		_record.setDisable(false);
-		_correctness.setVisible(false);
-		_status.setVisible(false);
-		_tryAgain.setVisible(false);
+		_recordButton.setDisable(false);
+		_playButton.setDisable(true);
+		_checkAnswerButton.setDisable(true);
+		_nextQuestionButton.setDisable(true);
+		_tryAgainButton.setDisable(true);
+
+		_numberLabel.setText(_number.toString());
+		_correctnessLabel.setVisible(false);
+		_statusLabel.setVisible(false);
 	}
 
 	/**
 	 * This is the reset used when we want to try the same question again. 
-	 * This will reset the buttons but will keep the label.
+	 * This will reset the buttons but will keep the number.
 	 * Can only be done once per question.
 	 */
 	public void secondTryReset() {
 		answered = false;
 		firstTry = false;
 		
-		// Lock all the buttons into the right state.		
-		_commitAnswer.setDisable(true);
-		_next.setDisable(true);
-		_play.setDisable(true);
-		_record.setDisable(false);
-		_correctness.setVisible(false);
-		_status.setVisible(false);
-		_tryAgain.setVisible(false);
+		_recordButton.setDisable(false);
+		_playButton.setDisable(true);
+		_checkAnswerButton.setDisable(true);
+		_nextQuestionButton.setDisable(true);
+		_tryAgainButton.setDisable(true);
 
-		//label, doesn't change
+		_correctnessLabel.setVisible(false);
+		_statusLabel.setVisible(false);
 	}
 
 	@Override
 	public void update(Observable arg0, Object recorded) {
-		if (recorded == "endRecord") {
-			_record.setDisable(false);
-			_commitAnswer.setDisable(false);
-			_play.setDisable(false);
-			_status.setVisible(false);
+		if (recorded.equals("endRecord")) {
+			_recordButton.setDisable(false);
+			_checkAnswerButton.setDisable(false);
+			_playButton.setDisable(false);
+			_statusLabel.setVisible(false);
 		}
-		else if (recorded == "beginRecord") {
-			_record.setDisable(true);
-			_commitAnswer.setDisable(true);
-			_play.setDisable(true);
-			_status.setText("Recording...");
-			_status.setVisible(true);
+		else if (recorded.equals("beginRecord")) {
+			_recordButton.setDisable(true);
+			_checkAnswerButton.setDisable(true);
+			_playButton.setDisable(true);
+			_statusLabel.setText("Recording...");
+			_statusLabel.setVisible(true);
 		}
-		else if (recorded == "Correct") {
+		else if (recorded.equals("Correct")) {
 			answered = true;
 
 			numCorrect++;
 			String output = String.format("Correct Answers: %d", numCorrect);			
-			_correctAnswers.setText(output);
 
-			_correctness.setText("Correct");
-			_correctness.setVisible(true);
-			_record.setDisable(true);
-			_commitAnswer.setDisable(true);
-			_next.setDisable(false);
+			_recordButton.setDisable(true);
+			_checkAnswerButton.setDisable(true);
+			_nextQuestionButton.setDisable(false);
+
+			_correctAnswersLabel.setText(output);
+			_correctnessLabel.setText("Correct");
+			_correctnessLabel.setVisible(true);
 		}
-		else if (recorded == "Incorrect") {
+		else if (recorded.equals("Incorrect")) {
 			answered = true;
 
-			_correctness.setText("Incorrect");
-			_correctness.setVisible(true);
-			_record.setDisable(true);
-			_commitAnswer.setDisable(true);
-			_next.setDisable(false);
-
+			_correctnessLabel.setText("Incorrect");
+			_correctnessLabel.setVisible(true);
+			
+			_recordButton.setDisable(true);
+			_checkAnswerButton.setDisable(true);
+			_nextQuestionButton.setDisable(false);
 			if (firstTry) {	
-				// Add in a try again button which appears when this event occurs.
-				_tryAgain.setVisible(true);
+				// Enable the 'try again' button if this is the end of the first attempt.
+				_tryAgainButton.setDisable(false);
 			}
 		}
-		else if (recorded == "BeginPlay") {
-			_status.setText("Playing...");
-			_status.setVisible(true);
-			_record.setDisable(true);
-			_commitAnswer.setDisable(true);
-			_play.setDisable(true);
+		else if (recorded.equals("BeginPlay")) {
+			_recordButton.setDisable(true);
+			_playButton.setDisable(true);
+			_checkAnswerButton.setDisable(true);
+			_nextQuestionButton.setDisable(true);
 
-			if (!_next.isDisabled()) {
-				_next.setDisable(true);
-			}
+			_statusLabel.setText("Playing...");
+			_statusLabel.setVisible(true);
 		}
-		else if (recorded == "EndPlay") {
-			_status.setVisible(false);			
-			_play.setDisable(false);
+		else if (recorded.equals("EndPlay")) {
+			_statusLabel.setVisible(false);			
+			_playButton.setDisable(false);
 
 			if (answered) {
 				// Unlock the next button only if the questions has been answered
-				_next.setDisable(false);
+				_nextQuestionButton.setDisable(false);
 			}
 			else {
 				// Unlock the recording button, and unlock checking, if unanswered
-				_record.setDisable(false);
-				_commitAnswer.setDisable(false);
+				_recordButton.setDisable(false);
+				_checkAnswerButton.setDisable(false);
 			}
 		}
 	}

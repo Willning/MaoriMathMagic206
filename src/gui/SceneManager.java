@@ -40,37 +40,39 @@ public class SceneManager {
         
         switch (sceneType) {
             case START:
-				root = new StartPane(_stage);
-                break;
-
-            case HARD_TEST:
-				root = new TestPane(_stage, ListMode.HARD);
-                break;
-
-            case EASY_TEST:
-				root = new TestPane(_stage, ListMode.EASY);
+				root = new StartPane();
                 break;
 
             case LIST:
-				root = new ListSelectPane(_stage); 
+				root = new ListSelectPane(); 
+                break;
+
+            case HARD_TEST:
+				root = new TestPane(ListMode.HARD);
+                break;
+
+            case EASY_TEST:
+				root = new TestPane(ListMode.EASY);
                 break;
 
             case HIGHSCORE:
-                root = new HighScoreScreen(_stage);
+                root = new HighScoreScreen();
                 break;
 
             case SCORE:
 
             default:
-                root = new StartPane(_stage);
+                root = new StartPane();
         }
 
-        Scene scene = new Scene(
-            root,
-            FrameConstants.WINDOW_WIDTH, 
-            FrameConstants.WINDOW_HEIGHT
-        );
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(new File("src/styles.css").toURI().toString());
 
+        _stage.setScene(scene);
+    }
+
+    public void changeScene(Parent root) {
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(new File("src/styles.css").toURI().toString());
 
         _stage.setScene(scene);

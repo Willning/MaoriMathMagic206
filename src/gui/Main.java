@@ -19,21 +19,17 @@ public class Main extends Application{
 	@Override
 	public void start(Stage stage) {
 		stage.setTitle("Tātai");
+		stage.setWidth(800);
+		stage.setHeight(600);
 
 		SceneManager.create(stage);
 		SceneManager.get().changeScene(SceneManager.SceneType.START);
-		
-		// Every time the scene shifts, fit the stage to the pane.
-		// Stops unneccesary size changes.
-		stage.sizeToScene();
-		
-		stage.setResizable(false);
+
 		stage.setOnCloseRequest(e -> {
 			Platform.exit();
 			System.exit(0);
         });
 		
-		// Primary stage will not be able to be resized, due to it messing up the layout
 		stage.show();
 	}
 }

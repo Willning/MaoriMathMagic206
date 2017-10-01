@@ -4,7 +4,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import testing.HighScoreManager;
 
 //@@TODO: Add a progress to next stage button
@@ -18,7 +17,7 @@ public class ScoreScreen extends StackPane{
 	private Label _score;
 	private Label _status;
 	
-	public ScoreScreen(Stage _stage, ListMode mode, int score) {
+	public ScoreScreen(ListMode mode, int score) {
 		_score = new Label();
 		_status = new Label();
 		

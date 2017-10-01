@@ -1,10 +1,14 @@
 package gui;
 
+import javafx.geometry.Pos;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * This is the first Screen that the user will see.
@@ -14,29 +18,38 @@ import javafx.stage.Stage;
 
 public class StartPane extends StackPane {
 
-	public StartPane(Stage stage) {
+	public StartPane() {
 		super();
 
-		Button btn = new Button();
-		btn.setText("Start");
-		btn.setPrefSize(100d, 75d);
-		btn.setTranslateY(150d);
-		btn.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.LIST));
+		// Main layout
+		VBox layout = new VBox();
+		layout.getStyleClass().add("vbox");
+		layout.setAlignment(Pos.CENTER);
 
-		Button highScore = new Button(); 
-		highScore.setText("HighScores");
-		highScore.setPrefSize(100d,75d);
-		highScore.setTranslateY(230d);
+		// Row of buttons
+		TilePane subLayout = new TilePane(Orientation.HORIZONTAL);
+		subLayout.getStyleClass().add("button-pane");
+		subLayout.getStyleClass().add("spaced");
+		subLayout.setAlignment(Pos.CENTER);
 
-		highScore.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HIGHSCORE));
+		Label title = new Label();
+		title.getStyleClass().add("heading");
+		title.setText("Tātai!");
 
-		Label label = new Label();
-		label.setText("Tātai");
-		label.setScaleX(5);
-		label.setScaleY(5);
+		Button startButton = new Button();
+		startButton.getStyleClass().add("large-button");
+		startButton.setText("Start");
+		startButton.setMaxWidth(Double.MAX_VALUE);
+		startButton.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.LIST));
 
-		this.getChildren().add(btn);
-		this.getChildren().add(highScore);
-		this.getChildren().add(label); 
+		Button highScoreButton = new Button(); 
+		highScoreButton.getStyleClass().add("large-button");
+		highScoreButton.setText("High Scores");
+		highScoreButton.setMaxWidth(Double.MAX_VALUE);
+		highScoreButton.setOnAction(e -> SceneManager.get().changeScene(SceneManager.SceneType.HIGHSCORE));
+
+		subLayout.getChildren().addAll(startButton, highScoreButton);
+		layout.getChildren().addAll(title, subLayout);
+		this.getChildren().addAll(layout);
 	}
 }
