@@ -1,5 +1,6 @@
 package testing;
 
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +41,14 @@ public class HighScoreManager {
 	public void addScore(ListMode mode, int score) {
 		if (mode.equals(ListMode.EASY)) {
 			_easyScores.add(score);
+			Collections.sort(_easyScores);
+			Collections.reverse(_easyScores);
 		} 
 		else if (mode.equals(ListMode.HARD)) {
 			_hardScores.add(score);
+			Collections.sort(_hardScores);
+			Collections.reverse(_hardScores);
 		}
-		
 	}
 	
 	/**

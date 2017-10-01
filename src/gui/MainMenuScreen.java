@@ -38,12 +38,14 @@ public class MainMenuScreen extends StackPane {
 
 		Button startButton = new Button();
 		startButton.getStyleClass().add("large-button");
+		startButton.getStyleClass().add("green");
 		startButton.setText("Start");
 		startButton.setMaxWidth(Double.MAX_VALUE);
 		startButton.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.LIST_SELECT));
 
 		Button highScoreButton = new Button(); 
 		highScoreButton.getStyleClass().add("large-button");
+		highScoreButton.getStyleClass().add("blue");
 		highScoreButton.setText("High Scores");
 		highScoreButton.setMaxWidth(Double.MAX_VALUE);
 		highScoreButton.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.HIGHSCORE));

@@ -1,11 +1,13 @@
 package gui;
 
 import java.util.List;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import testing.HighScoreManager;
 
@@ -21,50 +23,89 @@ public class HighScoreScreen extends StackPane {
 
 	public HighScoreScreen() {
 		HighScoreManager scoreManager = HighScoreManager.getInstance();
-		Label highScoreTitle = new Label();
-		highScoreTitle.setText("High Scores");
-		highScoreTitle.setScaleX(5);
-		highScoreTitle.setScaleY(5);
-		highScoreTitle.setTranslateY(-250d);
-
-		Label easyLabel = new Label();
-		easyLabel.setText("Easy Mode");
-		easyLabel.setScaleX(2);
-		easyLabel.setScaleY(2);
 		
-		Label hardLabel = new Label();
-		hardLabel.setText("Hard Mode");
-		hardLabel.setScaleX(2);
-		hardLabel.setScaleY(2);
+		BorderPane layout = new BorderPane();
+	
+		// Left:
 
-		easyList = listAdapt(scoreManager.returnList(ListMode.EASY));
-		easyList.setMaxHeight(400d);
-		easyList.setMaxWidth(100d);
+		Label easyLabel = new Label("Easy Mode");
+		easyLabel.getStyleClass().add("subsubheading");
 
-		hardList = listAdapt(scoreManager.returnList(ListMode.HARD));		
-		hardList.setMaxHeight(400d);
-		hardList.setMaxWidth(100d);
-		
 		VBox easyBox = new VBox();
-		easyBox.setSpacing(10d);
+		easyBox.setAlignment(Pos.CENTER_LEFT);
+		easyBox.getStyleClass().add("vbox-left");
 		easyBox.getChildren().add(easyLabel);
-		easyBox.getChildren().add(easyList);
-		
+
+		scoreManager.addScore(ListMode.EASY, 0);
+		scoreManager.addScore(ListMode.EASY, 0);
+		scoreManager.addScore(ListMode.EASY, 0);
+		scoreManager.addScore(ListMode.EASY, 0);
+		scoreManager.addScore(ListMode.EASY, 0);
+
+		int numScores = 0;
+		for (int score : scoreManager.returnList(ListMode.EASY)) {
+			if (numScores >= 5) {
+				break;
+			}
+
+			Button scoreLabel = new Button("" + score);
+			scoreLabel.setMaxWidth(Double.MAX_VALUE);
+			scoreLabel.getStyleClass().add("green");
+			
+			easyBox.getChildren().add(scoreLabel);
+			numScores++;
+		}
+
+		// Right:
+
+		Label hardLabel = new Label("Hard Mode");
+		hardLabel.getStyleClass().add("subsubheading");
+
 		VBox hardBox = new VBox();
-		hardBox.setSpacing(10d);
+		hardBox.setAlignment(Pos.CENTER_RIGHT);
+		hardBox.getStyleClass().add("vbox-right");
 		hardBox.getChildren().add(hardLabel);
-		hardBox.getChildren().add(hardList);
-		hardBox.setTranslateX(700d);
-		
-		Button back = new Button();
-		back.setText("Back");
-		back.setPrefSize(200d, 100d);
+
+		scoreManager.addScore(ListMode.HARD, 0);
+		scoreManager.addScore(ListMode.HARD, 0);
+		scoreManager.addScore(ListMode.HARD, 0);
+		scoreManager.addScore(ListMode.HARD, 0);
+		scoreManager.addScore(ListMode.HARD, 0);
+
+		numScores = 0;
+		for (int score : scoreManager.returnList(ListMode.HARD)) {
+			if (numScores >= 5) {
+				break;
+			}
+			
+			Button scoreLabel = new Button("" + score);
+			scoreLabel.setMaxWidth(Double.MAX_VALUE);
+			scoreLabel.getStyleClass().add("red");
+			
+			hardBox.getChildren().add(scoreLabel);
+			numScores++;
+		}
+
+		// Centre:
+
+		Label highScoreTitle = new Label("High Scores");
+		highScoreTitle.getStyleClass().add("subheading");
+
+		Button back = new Button("Back");
 		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
+
+		VBox middle = new VBox();
+		middle.setAlignment(Pos.CENTER);
+		middle.getStyleClass().add("vbox");
+		middle.getChildren().addAll(highScoreTitle, back);
 		
-		this.getChildren().add(back);
-		this.getChildren().add(easyBox);
-		this.getChildren().add(hardBox);
-		this.getChildren().add(highScoreTitle);
+		// Layout:
+
+		layout.setLeft(easyBox);
+		layout.setRight(hardBox);
+		layout.setCenter(middle);
+
+		this.getChildren().add(layout);
 	}
 
 	public ListView<Integer> listAdapt(List<Integer> inputs) {

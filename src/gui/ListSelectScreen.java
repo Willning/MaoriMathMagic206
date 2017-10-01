@@ -32,12 +32,14 @@ public class ListSelectScreen extends StackPane {
 		// Button for Easy List(1-10)
 		Button easy = new Button();
 		easy.getStyleClass().add("large-button");
+		easy.getStyleClass().add("green");
 		easy.setText("Easy List");
 		easy.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.EASY_TEST));
 		
 		// Button for hard List (1-100)
 		Button hard = new Button();
 		hard.getStyleClass().add("large-button");
+		hard.getStyleClass().add("red");
 		hard.setText("Hard List");
 		hard.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.HARD_TEST));
 		

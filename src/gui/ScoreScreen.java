@@ -1,9 +1,13 @@
 package gui;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import testing.HighScoreManager;
 
 //@@TODO: Add a progress to next stage button
@@ -17,52 +21,48 @@ public class ScoreScreen extends StackPane{
 	private Label _score;
 	private Label _status;
 	
-	public ScoreScreen(ListMode mode, int score) {
-		_score = new Label();
-		_status = new Label();
-		
+	public ScoreScreen(ListMode mode, int score) {		
+
 		HighScoreManager scoreInstance = HighScoreManager.getInstance();
 		scoreInstance.addScore(mode, score);
 		
 		String difficulty = "none";
-		
 		if (mode == ListMode.EASY) {
 			difficulty = "easy";
 		}
 		else if (mode == ListMode.HARD) {
 			difficulty = "hard";
 		}
+
+		VBox layout = new VBox();
+		layout.getStyleClass().add("vbox");
+		layout.setAlignment(Pos.CENTER);
 		
 		String scoreOutput = String.format("You got %d correct on %s mode", score, difficulty);
-		_score.setText(scoreOutput);
-		_score.setScaleX(3);
-		_score.setScaleY(3);
+		_score = new Label(scoreOutput);
+		_score.getStyleClass().add("subheading");
+		layout.getChildren().add(_score);
+
+		_status = new Label();
 		
 		Button back = new Button();
-		back.setText("Back To Start");
-		back.setPrefSize(160d, 35d);
-		back.setTranslateY(150d);
+		back.setText("Back");
 		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
 		
-		if (score > 8 && mode == ListMode.EASY) {
-			_status.setText("Congradulations, you are now able to move onto the Hard List ");
-			_status.setTranslateY(40d);
-			_status.setScaleX(2);
-			_status.setScaleY(2);
-			this.getChildren().add(_status);
+		if (score >= 8 && mode == ListMode.EASY) {
+			_status.setText("Congratulations! You are now able to move onto the hard list.");
 			
-			// Add a button to play Hard List here.
-			Button advance = new Button();
-			advance.setText("Play Hard List");
-			advance.setPrefSize(160d, 35d);
-			advance.setTranslateY(100d);
-			
+			// Button to play the hard list.
+			Button advance = new Button("Play Hard List");
+			advance.getStyleClass().add("large-button");
+			advance.getStyleClass().add("green");
 			advance.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.HARD_TEST));
 				
-			this.getChildren().add(advance);
+			layout.getChildren().addAll(_status, advance);
 		}
 		
-		this.getChildren().add(_score);
-		this.getChildren().add(back);
+		layout.getChildren().add(back);
+
+		this.getChildren().add(layout);
 	}
 }
