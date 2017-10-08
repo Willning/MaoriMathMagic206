@@ -42,6 +42,8 @@ public class WordCheckScript {
 					String[] output = content.split("sil ");
 					_heardWord = output[1];
 					_heardWord = _heardWord.substring(0, _heardWord.lastIndexOf(" "));
+					
+					
 				}
 				return null;
 			}

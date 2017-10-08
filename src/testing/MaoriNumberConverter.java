@@ -73,13 +73,13 @@ public class MaoriNumberConverter {
 		}
 		else if (leadDigit == 1) {
 			return String.format(
-				"tekau ma %s", 
+				"tekau maa %s", 
 				convertDigit(backDigit)
 			);			
 		}
 		else {
 			return String.format(
-				"%s tekau ma %s", 
+				"%s tekau maa %s", 
 				convertDigit(leadDigit), 
 				convertDigit(backDigit)
 			);

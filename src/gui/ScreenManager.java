@@ -66,14 +66,14 @@ public class ScreenManager {
         }
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(new File("src/styles.css").toURI().toString());
+        scene.getStylesheets().add(new File("./styles.css").toURI().toString());
 
         _stage.setScene(scene);
     }
 
     public void changeScreen(Parent root) {
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(new File("src/styles.css").toURI().toString());
+        scene.getStylesheets().add(new File("./styles.css").toURI().toString());
 
         _stage.setScene(scene);
     }
