@@ -22,18 +22,17 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import questionGeneration.QuestionMaker;
 import testing.TestConductor;
 
-//@@TODO add a try again mode
+//@@TODO every time answered, pipe the number to a stats class
 /**
- * The main pane for testing the user.
- * This pane is to be generated every time a new question needs to be asked, 
+ * The main pane for the practise mode of naming maori numbers 
  * generates a number and contains buttons to do relevant actions.
  */
 public class TestScreen extends StackPane implements Observer {
 
-	//This testScreen is now a screen for the practise mode of the testing
-
+	
 	// Labels
 	private Circle _circle;
 	private Label _numberLabel;
@@ -101,13 +100,15 @@ public class TestScreen extends StackPane implements Observer {
 
 		// The question number label displays how many questions have been completed.
 		_questionNumberLabel = new Label();
-		_questionNumberLabel.setText(String.format("Question #%s", _questionNumber));
+		_questionNumberLabel.getStyleClass().add("subheading");
+		_questionNumberLabel.setText(String.format("Question %s", _questionNumber));
 
 		// The correctness label displays whether the answer given was correct or not.
 		_correctnessLabel = new Label();
 
 		// Tracks the number of correct answers.
 		_correctAnswersLabel = new Label();
+		_correctAnswersLabel.getStyleClass().add("subsubheading");
 		_correctAnswersLabel.setText("Correct Answers: 0");
 
 		// The status label tracks the state of the state machine in this class.
@@ -116,7 +117,7 @@ public class TestScreen extends StackPane implements Observer {
 		// Initiate the recording. This button is disabled for the duration of recording.
 		_recordButton = new Button("● RECORD");
 		_recordButton.getStyleClass().add("large-button");
-		_recordButton.getStyleClass().add("red");
+		_recordButton.getStyleClass().add("pink");
 		_recordButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_recordButton.setOnAction(e -> tester.record());
 
@@ -168,7 +169,7 @@ public class TestScreen extends StackPane implements Observer {
 				this.reset();
 
 				_questionNumber++;
-				_questionNumberLabel.setText(String.format("Question #%s", _questionNumber));
+				_questionNumberLabel.setText(String.format("Question %s", _questionNumber));
 
 				if (_questionNumber == 10) {
 					_nextQuestionButton.setText("Finish Quiz");
@@ -197,9 +198,9 @@ public class TestScreen extends StackPane implements Observer {
 				_tryAgainButton			
 				);
 
-		layout.getChildren().addAll(
-				_correctAnswersLabel,
+		layout.getChildren().addAll(				
 				_questionNumberLabel,
+				_correctAnswersLabel,
 				_correctnessLabel,
 				_statusLabel,
 				numberPane, 
@@ -241,11 +242,21 @@ public class TestScreen extends StackPane implements Observer {
 		// Depending on the state of 'mode', the number attached to this screen
 		// will have a different range
 		if (_mode.equals(ListMode.EASY)) {
-			_number = randomGenerator.nextInt(8) + 1;
+			QuestionMaker make = new QuestionMaker();
+			make.generateEasyAddtion();
+			
+			_number=make.getAnswer();
+			_numberLabel.setText(make.getEquation());
+						
 		}
 		else if (_mode.equals(ListMode.HARD)) {
 			_number = randomGenerator.nextInt(98) + 1;
+		}else if (_mode.equals(ListMode.PRACTICE)){
+			_number = randomGenerator.nextInt(8) + 1;
+			_numberLabel.setText(_number.toString());
 		}
+		
+		//_numberLabel.setText(_number.toString());
 
 		answered = false;
 		firstTry = true;
@@ -261,7 +272,7 @@ public class TestScreen extends StackPane implements Observer {
 		_tryAgainButton.setVisible(false);
 
 		_circle.setFill(Paint.valueOf("#2366d1"));
-		_numberLabel.setText(_number.toString());
+		
 		_correctnessLabel.setVisible(false);
 		_statusLabel.setVisible(false);
 	}

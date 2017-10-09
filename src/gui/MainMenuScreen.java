@@ -9,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import questionGeneration.QuestionMaker;
 
 /**
  * This is the first Screen that the user will see.
@@ -20,6 +21,7 @@ public class MainMenuScreen extends StackPane {
 
 	public MainMenuScreen() {
 		super();
+		
 
 		// Main layout
 		VBox layout = new VBox();

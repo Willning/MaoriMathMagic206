@@ -52,8 +52,20 @@ public class ListSelectScreen extends StackPane {
 		back.setText("Back");
 		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
 		
+		TilePane subRowTwo = new TilePane(Orientation.HORIZONTAL);
+		subRowTwo.getStyleClass().add("button-pane");
+		subRowTwo.getStyleClass().add("spaced");
+		subRowTwo.setAlignment(Pos.CENTER);
+		
+		Button practice = new Button();
+		practice.getStyleClass().add("large-button");
+		practice.setText("Practice Mode");
+		practice.setOnAction(e ->  ScreenManager.get().changeScreen(ScreenManager.ScreenType.PRACTICE_MODE));
+		
+		
 		subLayout.getChildren().addAll(easy, hard);
-		layout.getChildren().addAll(title, subLayout, back);
+		subRowTwo.getChildren().addAll(practice);
+		layout.getChildren().addAll(title, subLayout, subRowTwo, back);
 		this.getChildren().add(layout);	
 	}
 }

@@ -33,6 +33,9 @@ public class ScoreScreen extends StackPane{
 		else if (mode == ListMode.HARD) {
 			difficulty = "hard";
 		}
+		else if (mode == ListMode.PRACTICE){
+			difficulty = "practice";
+		}
 
 		VBox layout = new VBox();
 		layout.getStyleClass().add("vbox");

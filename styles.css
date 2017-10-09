@@ -22,6 +22,11 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.pink {
+	    -fx-background-color: #ff0066;
+    -fx-text-fill: #FFFFFF;
+}
+
 .green {
     -fx-background-color: #20bc56;
     -fx-text-fill: #FFFFFF;
@@ -54,7 +59,7 @@
 }
 
 .spaced {
-    -fx-padding: 40 0 20 0;
+    -fx-padding: 10 0 20 0;
 }
 
 .heading {
@@ -74,7 +79,7 @@
 
 .number {
     -fx-spacing: 0;
-    -fx-font-size: 60;
+    -fx-font-size: 50;
     -fx-text-fill: #FFFFFF;
 }
 

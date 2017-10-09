@@ -15,7 +15,8 @@ public class ScreenManager {
         HARD_TEST,
         EASY_TEST,
         SCORE,
-        HIGHSCORE,
+        HIGHSCORE, 
+        PRACTICE_MODE,
     }
     
     private static ScreenManager instance = null;
@@ -54,6 +55,10 @@ public class ScreenManager {
             case EASY_TEST:
 				root = new TestScreen(ListMode.EASY);
                 break;
+                
+            case PRACTICE_MODE:
+            	root = new TestScreen(ListMode.PRACTICE);
+            	break;
 
             case HIGHSCORE:
                 root = new HighScoreScreen();
