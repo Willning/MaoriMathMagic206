@@ -4,12 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 import java.util.Random;
+
+import gui.ScreenManager.ScreenType;
 import javafx.geometry.Pos;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.paint.Paint;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -26,6 +32,8 @@ import testing.TestConductor;
  */
 public class TestScreen extends StackPane implements Observer {
 
+	//This testScreen is now a screen for the practise mode of the testing
+
 	// Labels
 	private Circle _circle;
 	private Label _numberLabel;
@@ -34,12 +42,14 @@ public class TestScreen extends StackPane implements Observer {
 	private Label _statusLabel;
 	private Label _correctAnswersLabel;
 
+	//Pre-Answer Phase Buttons
 	// Media control buttons
 	private Button _recordButton;
 	private Button _playButton;
-
 	// Question control buttons
 	private Button _checkAnswerButton;
+
+	// Post Answer control buttons
 	private Button _nextQuestionButton;
 	private Button _tryAgainButton;
 
@@ -72,10 +82,11 @@ public class TestScreen extends StackPane implements Observer {
 		topButtonBox.getStyleClass().add("spaced");
 		topButtonBox.setAlignment(Pos.CENTER);
 
-		// Second row of buttons
-		TilePane bottomButtonBox = new TilePane();
-		bottomButtonBox.getStyleClass().add("button-pane");
+		// Second row of buttons, trying a vertical stack for next and retry so there isn't asymmetry
+		VBox bottomButtonBox = new VBox();
+		bottomButtonBox.getStyleClass().add("vbox");
 		bottomButtonBox.setAlignment(Pos.CENTER);
+		bottomButtonBox.setMaxWidth(150);
 
 		// The number label is the main label displaying the current number.
 		_numberLabel = new Label();
@@ -91,26 +102,26 @@ public class TestScreen extends StackPane implements Observer {
 		// The question number label displays how many questions have been completed.
 		_questionNumberLabel = new Label();
 		_questionNumberLabel.setText(String.format("Question #%s", _questionNumber));
-		
+
 		// The correctness label displays whether the answer given was correct or not.
 		_correctnessLabel = new Label();
 
 		// Tracks the number of correct answers.
 		_correctAnswersLabel = new Label();
 		_correctAnswersLabel.setText("Correct Answers: 0");
-		
+
 		// The status label tracks the state of the state machine in this class.
 		_statusLabel = new Label();
 
 		// Initiate the recording. This button is disabled for the duration of recording.
-		_recordButton = new Button("⏺ RECORD");
+		_recordButton = new Button("● RECORD");
 		_recordButton.getStyleClass().add("large-button");
 		_recordButton.getStyleClass().add("red");
 		_recordButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_recordButton.setOnAction(e -> tester.record());
 
 		// Plays the recording
-		_playButton = new Button("▶️ PLAY");
+		_playButton = new Button("▶ LISTEN");
 		_playButton.getStyleClass().add("large-button");
 		_playButton.getStyleClass().add("green");
 		_playButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -124,7 +135,8 @@ public class TestScreen extends StackPane implements Observer {
 
 		// Pressing the 'check answer' button calls into the tester class which will fire back 
 		// a 'correct' or 'incorrect' event.
-		_checkAnswerButton = new Button("Check Answer");
+		_checkAnswerButton = new Button("✓ CHECK");
+		_checkAnswerButton.getStyleClass().add("large-button");
 		_checkAnswerButton.getStyleClass().add("blue");
 		_checkAnswerButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_checkAnswerButton.setDisable(true);
@@ -143,18 +155,18 @@ public class TestScreen extends StackPane implements Observer {
 		// Allows the user to try a question again
 		_tryAgainButton = new Button("Retry ⟲");
 		_tryAgainButton.getStyleClass().add("blue");
-		_tryAgainButton.setDisable(true);
+		_tryAgainButton.setVisible(false);
 		_tryAgainButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_tryAgainButton.setOnAction(e -> this.secondTryReset());
 
 		// Button to go to the next question. If 
-		_nextQuestionButton = new Button("Next Question →");
+		_nextQuestionButton = new Button("Next Question ➡");
 		_nextQuestionButton.getStyleClass().add("blue");
 		_nextQuestionButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_nextQuestionButton.setOnAction(e -> {
 			if (_questionNumber < 10) {
 				this.reset();
-				
+
 				_questionNumber++;
 				_questionNumberLabel.setText(String.format("Question #%s", _questionNumber));
 
@@ -169,33 +181,55 @@ public class TestScreen extends StackPane implements Observer {
 
 		// Returns to the main menu.
 		Button back = new Button("Quit");
-		back.setOnAction(e -> ScreenManager.get().changeScreen(ScreenManager.ScreenType.MAIN_MENU));
+		back.setOnAction(e -> 	quitAlert()		
+				);
+
+
 
 		topButtonBox.getChildren().addAll(
-			_recordButton, 
-			_playButton
-		);
+				_recordButton, 
+				_playButton,
+				_checkAnswerButton
+				);
 
-		bottomButtonBox.getChildren().addAll(
-			_checkAnswerButton, 
-			_tryAgainButton,
-			_nextQuestionButton 
-		);
+		bottomButtonBox.getChildren().addAll(			
+				_nextQuestionButton, 
+				_tryAgainButton			
+				);
 
 		layout.getChildren().addAll(
-			_correctAnswersLabel,
-			_questionNumberLabel,
-			_correctnessLabel,
-			_statusLabel,
-			numberPane, 
-			topButtonBox, 
-			bottomButtonBox, 
-			back
-		);
-		
-		this.getChildren().add(layout);
+				_correctAnswersLabel,
+				_questionNumberLabel,
+				_correctnessLabel,
+				_statusLabel,
+				numberPane, 
+				topButtonBox, 
+				bottomButtonBox	,
+				back
+				);
+
+
+
+		this.getChildren().add(layout);		
 
 		reset();
+	}
+
+	private void quitAlert(){
+		Alert alert= new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Really Quit?");
+		alert.setHeaderText("Quitting will automatically close this quiz session.");
+		alert.setContentText("Do you really want to quit?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+			// ... user chose OK
+			ScreenManager.get().changeScreen(new ScoreScreen(_mode, numCorrect));
+		} else {
+			// ... user chose CANCEL or closed the dialog
+		}		
+
+
 	}
 
 	/**
@@ -203,7 +237,7 @@ public class TestScreen extends StackPane implements Observer {
 	 */
 	public void reset() {
 		Random randomGenerator = new Random();
-		
+
 		// Depending on the state of 'mode', the number attached to this screen
 		// will have a different range
 		if (_mode.equals(ListMode.EASY)) {
@@ -215,12 +249,16 @@ public class TestScreen extends StackPane implements Observer {
 
 		answered = false;
 		firstTry = true;
-		
+
+		_recordButton.setVisible(true);
+		_checkAnswerButton.setVisible(true);		
 		_recordButton.setDisable(false);
+
 		_playButton.setDisable(true);
 		_checkAnswerButton.setDisable(true);
-		_nextQuestionButton.setDisable(true);
-		_tryAgainButton.setDisable(true);
+
+		_nextQuestionButton.setVisible(false);
+		_tryAgainButton.setVisible(false);
 
 		_circle.setFill(Paint.valueOf("#2366d1"));
 		_numberLabel.setText(_number.toString());
@@ -235,13 +273,17 @@ public class TestScreen extends StackPane implements Observer {
 	 */
 	public void secondTryReset() {
 		answered = false;
-		firstTry = false;
-		
-		_recordButton.setDisable(false);
+		firstTry = false;		
+
+		_recordButton.setVisible(true);
+		_checkAnswerButton.setVisible(true);
+
+
 		_playButton.setDisable(true);
 		_checkAnswerButton.setDisable(true);
-		_nextQuestionButton.setDisable(true);
-		_tryAgainButton.setDisable(true);
+
+		_nextQuestionButton.setVisible(false);
+		_tryAgainButton.setVisible(false);
 
 		_circle.setFill(Paint.valueOf("#2366d1"));
 		_correctnessLabel.setVisible(false);
@@ -254,7 +296,7 @@ public class TestScreen extends StackPane implements Observer {
 			_recordButton.setDisable(false);
 			_checkAnswerButton.setDisable(false);
 			_playButton.setDisable(false);
-			
+
 			_circle.setFill(Paint.valueOf("#2366d1"));
 			_statusLabel.setVisible(false);
 		}
@@ -262,7 +304,7 @@ public class TestScreen extends StackPane implements Observer {
 			_recordButton.setDisable(true);
 			_checkAnswerButton.setDisable(true);
 			_playButton.setDisable(true);
-			
+
 			_circle.setFill(Paint.valueOf("#ffdb4a"));
 			_statusLabel.setText("Recording...");
 			_statusLabel.setVisible(true);
@@ -273,8 +315,11 @@ public class TestScreen extends StackPane implements Observer {
 			numCorrect++;
 			String output = String.format("Correct Answers: %d", numCorrect);			
 
-			_recordButton.setDisable(true);
-			_checkAnswerButton.setDisable(true);
+			//mask the unneccesary buttons instead of locking them 
+			_recordButton.setVisible(false);
+			_checkAnswerButton.setVisible(false);
+
+			_nextQuestionButton.setVisible(true);
 			_nextQuestionButton.setDisable(false);
 
 			_correctAnswersLabel.setText(output);
@@ -284,13 +329,16 @@ public class TestScreen extends StackPane implements Observer {
 		}
 		else if (recorded.equals("Incorrect")) {
 			answered = true;
-			
-			_recordButton.setDisable(true);
-			_checkAnswerButton.setDisable(true);
+
+			_recordButton.setVisible(false);
+			_checkAnswerButton.setVisible(false);
+
+			_nextQuestionButton.setVisible(true);
 			_nextQuestionButton.setDisable(false);
+
 			if (firstTry) {	
 				// Enable the 'try again' button if this is the end of the first attempt.
-				_tryAgainButton.setDisable(false);
+				_tryAgainButton.setVisible(true);
 			}
 
 			_correctnessLabel.setText("Incorrect");
@@ -299,9 +347,11 @@ public class TestScreen extends StackPane implements Observer {
 		}
 		else if (recorded.equals("BeginPlay")) {
 			_recordButton.setDisable(true);
-			_playButton.setDisable(true);
+			_playButton.setDisable(true);			
 			_checkAnswerButton.setDisable(true);
-			_nextQuestionButton.setDisable(true);
+
+			_nextQuestionButton.setDisable(true);			
+			_tryAgainButton.setDisable(true);
 
 			_statusLabel.setText("Playing...");
 			_statusLabel.setVisible(true);
@@ -309,6 +359,8 @@ public class TestScreen extends StackPane implements Observer {
 		else if (recorded.equals("EndPlay")) {
 			_statusLabel.setVisible(false);			
 			_playButton.setDisable(false);
+
+			_tryAgainButton.setDisable(false);
 
 			if (answered) {
 				// Unlock the next button only if the questions has been answered

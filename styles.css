@@ -1,0 +1,81 @@
+.button {
+    -fx-background-color: #CCCCCC;
+    -fx-border-radius: 40;
+    -fx-spacing: 5;
+    -fx-padding: 5;
+    -fx-label-padding: 5;
+    -fx-text-fill: #000000;
+}
+
+.large-button {
+    -fx-padding: 15;
+    -fx-font-size: 20;
+}
+
+.blue {
+    -fx-background-color: #2366d1;
+    -fx-text-fill: #FFFFFF;
+}
+
+.red {
+    -fx-background-color: #ff3860;
+    -fx-text-fill: #FFFFFF;
+}
+
+.green {
+    -fx-background-color: #20bc56;
+    -fx-text-fill: #FFFFFF;
+}
+
+.hbox {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
+.vbox {
+    -fx-padding: 5;
+    -fx-spacing: 5;
+}
+
+.vbox-left {
+    -fx-padding: 10 10 10 50;
+    -fx-spacing: 10;
+}
+
+.vbox-right {
+    -fx-padding: 10 50 10 10;
+    -fx-spacing: 10;
+}
+
+.button-pane {
+    -fx-padding: 0;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+.spaced {
+    -fx-padding: 40 0 20 0;
+}
+
+.heading {
+    -fx-spacing: 10 10 10 60;
+    -fx-font-size: 60;
+}
+
+.subheading {
+    -fx-spacing: 10 10 10 40;
+    -fx-font-size: 40;
+}
+
+.subsubheading {
+    -fx-spacing: 10 10 10 40;
+    -fx-font-size: 20;
+}
+
+.number {
+    -fx-spacing: 0;
+    -fx-font-size: 60;
+    -fx-text-fill: #FFFFFF;
+}
+
+
