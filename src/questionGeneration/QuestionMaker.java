@@ -61,10 +61,23 @@ public class QuestionMaker {
 		while (numOne * numTwo >= 10 || numOne * numTwo == 0){
 			numOne = randomGenerator.nextInt(9);
 			numTwo = randomGenerator.nextInt(9);
-		}
-		
+		}		
 		outputQuestion = String.format("%sx%s", numOne, numTwo);
 		answer = numOne * numTwo;
+	}
+	
+	public void generateEasyDivision(){
+		int numOne = 100;
+		int numTwo = 15; 
+		
+		while (numOne/numTwo >= 10 || numOne%numTwo !=  0){
+			numOne = randomGenerator.nextInt(98)+1;
+			numTwo = randomGenerator.nextInt(8)+1;
+		}
+		
+		outputQuestion = String.format("%s÷%s", numOne, numTwo);
+		answer = numOne / numTwo;
+		
 	}
 	
 	

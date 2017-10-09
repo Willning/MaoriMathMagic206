@@ -212,8 +212,6 @@ public class TestScreen extends StackPane implements Observer {
 				back
 				);
 
-
-
 		this.getChildren().add(layout);		
 
 		reset();
@@ -248,17 +246,17 @@ public class TestScreen extends StackPane implements Observer {
 		// Depending on the state of 'mode', the number attached to this screen
 		// will have a different range
 		if (_mode.equals(ListMode.EASY)) {			
-			make.generateEasyAddtion();
+			make.generateEasyDivision();
 			
 			_number=make.getAnswer();
 			_numberLabel.setText(make.getEquation());
 						
 		}
 		else if (_mode.equals(ListMode.HARD)) {
-			make.generateEasyMultiplication();
-			
+			make.generateEasyMultiplication();			
 			_number=make.getAnswer();
 			_numberLabel.setText(make.getEquation());
+			
 		}else if (_mode.equals(ListMode.PRACTICE)){
 			_number = randomGenerator.nextInt(8) + 1;
 			_numberLabel.setText(_number.toString());
