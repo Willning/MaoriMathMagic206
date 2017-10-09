@@ -5,7 +5,9 @@ package playerControl;
  */
 public class Player {
 	
+	
 	private int questionsAnswered;
+	
 	
 	
 	

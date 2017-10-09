@@ -7,10 +7,7 @@ import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 
-import gui.ScreenManager.ScreenType;
 import javafx.geometry.Pos;
-import javafx.geometry.Orientation;
-import javafx.scene.Scene;
 import javafx.scene.paint.Paint;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -19,10 +16,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import questionGeneration.QuestionMaker;
+import testing.GameList;
+import testing.Question;
 import testing.TestConductor;
 
 //@@TODO every time answered, pipe the number to a stats class
@@ -59,6 +57,10 @@ public class TestScreen extends StackPane implements Observer {
 	private Integer numCorrect = 0;
 	private boolean answered;
 	private boolean firstTry;
+	private boolean correct;
+	
+	//QuestionList
+	private GameList _questionList = new GameList();
 
 	public TestScreen(ListMode mode) {
 		super();
@@ -165,6 +167,7 @@ public class TestScreen extends StackPane implements Observer {
 		_nextQuestionButton.getStyleClass().add("blue");
 		_nextQuestionButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		_nextQuestionButton.setOnAction(e -> {
+			_questionList.add(new Question( _numberLabel.getText(),_number.toString(), correct));
 			if (_questionNumber < 10) {
 				this.reset();
 
@@ -176,7 +179,7 @@ public class TestScreen extends StackPane implements Observer {
 				}
 			}
 			else {
-				ScreenManager.get().changeScreen(new ScoreScreen(_mode, numCorrect));
+				ScreenManager.get().changeScreen(new ScoreScreen(_mode, numCorrect, _questionList));
 			}
 		});
 
@@ -225,7 +228,7 @@ public class TestScreen extends StackPane implements Observer {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK){
 			// ... user chose OK
-			ScreenManager.get().changeScreen(new ScoreScreen(_mode, numCorrect));
+			ScreenManager.get().changeScreen(new ScoreScreen(_mode, numCorrect, _questionList));
 		} else {
 			// ... user chose CANCEL or closed the dialog
 		}		
@@ -238,11 +241,13 @@ public class TestScreen extends StackPane implements Observer {
 	 */
 	public void reset() {
 		Random randomGenerator = new Random();
+		QuestionMaker make = new QuestionMaker();
+		
+		correct = false;
 
 		// Depending on the state of 'mode', the number attached to this screen
 		// will have a different range
-		if (_mode.equals(ListMode.EASY)) {
-			QuestionMaker make = new QuestionMaker();
+		if (_mode.equals(ListMode.EASY)) {			
 			make.generateEasyAddtion();
 			
 			_number=make.getAnswer();
@@ -250,7 +255,10 @@ public class TestScreen extends StackPane implements Observer {
 						
 		}
 		else if (_mode.equals(ListMode.HARD)) {
-			_number = randomGenerator.nextInt(98) + 1;
+			make.generateEasySubtraction();
+			
+			_number=make.getAnswer();
+			_numberLabel.setText(make.getEquation());
 		}else if (_mode.equals(ListMode.PRACTICE)){
 			_number = randomGenerator.nextInt(8) + 1;
 			_numberLabel.setText(_number.toString());
@@ -322,6 +330,8 @@ public class TestScreen extends StackPane implements Observer {
 		}
 		else if (recorded.equals("Correct")) {
 			answered = true;
+			correct = true;
+		
 
 			numCorrect++;
 			String output = String.format("Correct Answers: %d", numCorrect);			
@@ -337,9 +347,12 @@ public class TestScreen extends StackPane implements Observer {
 			_correctnessLabel.setText("Correct");
 			_correctnessLabel.setVisible(true);
 			_circle.setFill(Paint.valueOf("#20bc56"));
+			
+			_numberLabel.setText(_number.toString());
 		}
 		else if (recorded.equals("Incorrect")) {
 			answered = true;
+			
 
 			_recordButton.setVisible(false);
 			_checkAnswerButton.setVisible(false);
@@ -350,8 +363,10 @@ public class TestScreen extends StackPane implements Observer {
 			if (firstTry) {	
 				// Enable the 'try again' button if this is the end of the first attempt.
 				_tryAgainButton.setVisible(true);
+			}else{				
+				_numberLabel.setText(_number.toString());
 			}
-
+			
 			_correctnessLabel.setText("Incorrect");
 			_correctnessLabel.setVisible(true);
 			_circle.setFill(Paint.valueOf("#ff3860"));

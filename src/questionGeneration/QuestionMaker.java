@@ -8,33 +8,47 @@ import java.util.Random;
 public class QuestionMaker {
 
 	private Random randomGenerator = new Random();
-	
+
 	private String outputQuestion;
 	private int answer;
-	
+
 	public void generateEasyAddtion(){
 		int numOne = 100;
 		int numTwo = 100; 
-		
+
 		while (numOne+numTwo>10 || numOne + numTwo == 0){
-		
-		numOne = randomGenerator.nextInt(9);
-		numTwo = randomGenerator.nextInt(9);
+
+			numOne = randomGenerator.nextInt(9);
+			numTwo = randomGenerator.nextInt(9);
 		}
-		
-		outputQuestion = String.format("%s+%s=", numOne, numTwo);
-		
+
+		outputQuestion = String.format("%s+%s", numOne, numTwo);
+
 		answer= numOne + numTwo;	
-		
+
 	}
-	
+
+	public void generateEasySubtraction(){
+		int numOne = -100;
+		int numTwo = 100; 
+
+		while (numOne - numTwo >10 || numOne - numTwo < 0){
+			numOne = randomGenerator.nextInt(9);
+			numTwo = randomGenerator.nextInt(9);
+		}
+
+		outputQuestion = String.format("%s-%s", numOne, numTwo);
+
+		answer= numOne - numTwo;	
+	}
+
 	public String getEquation(){
 		return outputQuestion;
-		
+
 	}
-	
+
 	public int getAnswer(){
 		return answer;
-		
+
 	}
 }
