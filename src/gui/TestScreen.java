@@ -255,7 +255,7 @@ public class TestScreen extends StackPane implements Observer {
 						
 		}
 		else if (_mode.equals(ListMode.HARD)) {
-			make.generateEasySubtraction();
+			make.generateEasyMultiplication();
 			
 			_number=make.getAnswer();
 			_numberLabel.setText(make.getEquation());
